@@ -1,0 +1,47 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.3",
+    "babel-polyfill": "^6.26.0",
+    "expo": "^35.0.0",
+    "firebase": "^6.3.1",
+    "metro-react-native-babel-preset": "^0.53.1",
+    "native-base": "^2.13.1",
+    "prop-types": "15.7.2",
+    "react": "16.5.0",
+    "react-multiselect-checkboxes": "^0.1.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+    "react-native-action-button": "2.8.5",
+    "react-native-dashboard": "0.0.4",
+    "react-native-elements": "^1.1.0",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-highcharts": "^1.0.2",
+    "react-native-loading-spinner-overlay": "^1.0.1",
+    "react-native-modal-selector": "1.0.3",
+    "react-native-platform-touchable": "^1.1.1",
+    "react-native-scrollable-tab-view": "^0.10.0",
+    "react-native-select-multiple": "^2.0.0",
+    "react-native-table-component": "^1.2.1",
+    "react-native-touchable-scale": "^2.0.0",
+    "react-native-vector-icons": "^6.4.2",
+    "react-navigation": "^3.0.9"
+  },
+  "devDependencies": {
+    "babel-jest": "22.1.0",
+    "babel-preset-expo": "^5.0.0",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "21.1.0",
+    "jest-expo": "^35.0.0",
+    "react-test-renderer": "15.6.1"
+  }
+}
