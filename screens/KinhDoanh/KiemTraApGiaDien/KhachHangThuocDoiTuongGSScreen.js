@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -64,6 +63,7 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -72,13 +72,14 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
       Alert.alert("AsyncStorage error", error.message);
     }
   };
-
   componentDidMount() {
     this._bootstrapAsync();
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -141,8 +142,7 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
     });
     let Thang = vThangNam.split("/")[0];
     let Nam = vThangNam.split("/")[1];
-    let param1 =
-      "?MaDonVi=" + vMaDonVi ;
+    let param1 = "?MaDonVi=" + vMaDonVi;
 
     const urls = [urlBaoCao.sp_ThongKeApGia + param1];
     Promise.all(
@@ -150,13 +150,10 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            
- {
-  this.setState({spinner: false});
-  Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-}
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -227,7 +224,7 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
       },
       lang: {
         thousandsSep: ".",
-        decimalPoint: ','
+        decimalPoint: ","
       }
     };
     var conf3 = {
@@ -256,14 +253,14 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
         this.state.listDaTa && !Array.isArray(this.state.listDaTa)
           ? this.state.listDaTa.Series
           : [],
-          plotOptions: {
-            column: {
-              dataLabels: {
-                format: "{point.y:,.0f} ",
-                enabled: true
-              }
-            }
-          },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.0f} ",
+            enabled: true
+          }
+        }
+      },
       responsive: {
         rules: [
           {
@@ -287,7 +284,11 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
     let list1 = [];
     let list2 = [];
     let varCategories1 = [];
-    if (this.state.listDaTa && !Array.isArray(this.state.listDaTa) && this.state.listDaTa.Series!=null) {
+    if (
+      this.state.listDaTa &&
+      !Array.isArray(this.state.listDaTa) &&
+      this.state.listDaTa.Series != null
+    ) {
       for (let i = 0; i < this.state.listDaTa.Series[0].data.length; i++) {
         vTong1 = vTong1 + this.state.listDaTa.Series[0].data[i];
       }
@@ -315,27 +316,14 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
       for (let i = 0; i < this.state.listDaTa.Series[8].data.length; i++) {
         vTong9 = vTong9 + this.state.listDaTa.Series[8].data[i];
       }
-
     }
-    vTong = vTong1+vTong2+vTong3+vTong4+vTong5+vTong6;
-    let colum1 = Number(
-      vTong == 0 ? 0.0 : ((vTong1 * 100) / vTong).toFixed(2)
-    );
-    let colum2 = Number(
-      vTong == 0 ? 0.0 : ((vTong2 * 100) / vTong).toFixed(2)
-    );
-    let colum3 = Number(
-      vTong == 0 ? 0.0 : ((vTong3 * 100) / vTong).toFixed(2)
-    );
-    let colum4 = Number(
-      vTong == 0 ? 0.0 : ((vTong4 * 100) / vTong).toFixed(2)
-    );
-    let colum5 = Number(
-      vTong == 0 ? 0.0 : ((vTong5 * 100) / vTong).toFixed(2)
-    );
-    let colum6 = Number(
-      vTong == 0 ? 0.0 : ((vTong6 * 100) / vTong).toFixed(2)
-    );
+    vTong = vTong1 + vTong2 + vTong3 + vTong4 + vTong5 + vTong6;
+    let colum1 = Number(vTong == 0 ? 0.0 : ((vTong1 * 100) / vTong).toFixed(2));
+    let colum2 = Number(vTong == 0 ? 0.0 : ((vTong2 * 100) / vTong).toFixed(2));
+    let colum3 = Number(vTong == 0 ? 0.0 : ((vTong3 * 100) / vTong).toFixed(2));
+    let colum4 = Number(vTong == 0 ? 0.0 : ((vTong4 * 100) / vTong).toFixed(2));
+    let colum5 = Number(vTong == 0 ? 0.0 : ((vTong5 * 100) / vTong).toFixed(2));
+    let colum6 = Number(vTong == 0 ? 0.0 : ((vTong6 * 100) / vTong).toFixed(2));
     list2.push(colum1);
     list2.push(colum2);
     list2.push(colum3);
@@ -348,9 +336,9 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
     list1.push(vTong4);
     list1.push(vTong5);
     list1.push(vTong6);
-   // list1.push(vTong7);
-   // list1.push(vTong8);
-  //  list1.push(vTong9);
+    // list1.push(vTong7);
+    // list1.push(vTong8);
+    //  list1.push(vTong9);
     varCategories1.push("SHBT");
     varCategories1.push("Bán buôn");
     varCategories1.push("HCSN");
@@ -379,21 +367,22 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
         enabled: false
       },
       xAxis: {
-        categories:varCategories1
+        categories: varCategories1
       },
       series: [
         {
           name: "Tổng (Số lượng)",
           data: list1
-        }],
-        plotOptions: {
-          column: {
-            dataLabels: {
-              format: "{point.y:,.0f} ",
-              enabled: true
-            }
+        }
+      ],
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.0f} ",
+            enabled: true
           }
-        },
+        }
+      },
       responsive: {
         rules: [
           {
@@ -421,13 +410,14 @@ export default class KhachHangThuocDoiTuongGSScreen extends React.PureComponent 
         enabled: false
       },
       xAxis: {
-        categories:varCategories1
+        categories: varCategories1
       },
       series: [
         {
           name: "Tỉ lệ (%)",
           data: list2
-        }],
+        }
+      ],
       plotOptions: {
         series: {
           borderWidth: 0,

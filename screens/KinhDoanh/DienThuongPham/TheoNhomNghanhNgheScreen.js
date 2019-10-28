@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 import SelectMultiple from "react-native-select-multiple";
@@ -91,8 +90,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
       let abc = [];
       AsyncStorage.getItem("selectedFruits").then(user_data_json => {
         let userData = JSON.parse(user_data_json);
-        if (userData != undefined) 
-        {
+        if (userData != undefined) {
           let vList = "";
           for (let i = 0; i < userData.length; i++) {
             if (i == 0) {
@@ -101,6 +99,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
               vList = vList + "," + userData[i].value;
             }
           }
+
           this.setState({
             selectedFruits: userData,
             listNghanhNgheSelected: vList
@@ -125,6 +124,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_NghanhNghe();
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           if (this.state.listNghanhNgheSelected.length > 0)
@@ -146,7 +146,9 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -163,8 +165,8 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -247,13 +249,10 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            
- {
-  this.setState({spinner: false});
-  Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-}
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -501,7 +500,7 @@ const styles = StyleSheet.create({
   },
   c: {
     marginTop: -15,
-  //  width: this.width - 180,
+    //  width: this.width - 180,
     flexDirection: "row"
   },
   d: {

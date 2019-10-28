@@ -12,6 +12,7 @@ import {
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
 //import { getTenDonVi } from "../../../data/dmdonvi";
+
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -59,12 +60,12 @@ export default class KiemTraVienScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(userData.mA_DVIQLY);
         }
       });
     } catch (error) {
-      this.setState({spinner: false});
       Alert.alert("AsyncStorage error", error.message);
     }
   };
@@ -109,12 +110,12 @@ export default class KiemTraVienScreen extends React.PureComponent {
             }
           );
         } else {
-          this.setState({spinner: false});
+          this.setState({ spinner: false });
           Alert.alert("Thông báo", "Không có dữ liệu!");
         }
       })
       .catch(error => {
-        this.setState({spinner: false});
+        this.setState({ spinner: false });
         Alert.alert("Lỗi kết nối!", error.toString());
       });
   };
@@ -131,12 +132,10 @@ export default class KiemTraVienScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            {
-              this.setState({spinner: false});
-              Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-            }
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -175,7 +174,7 @@ export default class KiemTraVienScreen extends React.PureComponent {
           " Nghìn",
           " Triệu",
           " Tỉ",
-          
+
           " Nghìn tỉ",
           " Triệu tỉ",
           " Tỉ tỉ"

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 export default class TheoThoiGianBanDienScreen extends React.PureComponent {
@@ -63,6 +62,7 @@ export default class TheoThoiGianBanDienScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -77,7 +77,9 @@ export default class TheoThoiGianBanDienScreen extends React.PureComponent {
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -94,8 +96,8 @@ export default class TheoThoiGianBanDienScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -149,13 +151,10 @@ export default class TheoThoiGianBanDienScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            
- {
-  this.setState({spinner: false});
-  Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-}
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -317,14 +316,14 @@ export default class TheoThoiGianBanDienScreen extends React.PureComponent {
         this.state.listDaTa && !Array.isArray(this.state.listDaTa)
           ? this.state.listDaTa.Series
           : [],
-          plotOptions: {
-            column: {
-              dataLabels: {
-                format: "{point.y:,.0f} ",
-                enabled: true
-              }
-            }
-          },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.0f} ",
+            enabled: true
+          }
+        }
+      },
       responsive: {
         rules: [
           {
@@ -391,7 +390,7 @@ export default class TheoThoiGianBanDienScreen extends React.PureComponent {
               backgroundColor: "white"
             }}
           >
-           <View>
+            <View>
               <ChartView
                 style={{ height: 400, width: width }}
                 config={conf1}

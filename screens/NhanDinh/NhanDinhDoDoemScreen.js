@@ -12,7 +12,6 @@ import {
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../networking/services";
 import ChartView from "react-native-highcharts";
-//import { getTenDonVi } from "../../data/dmdonvi";
 import Spinner from "react-native-loading-spinner-overlay";
 //import Tabs from "../Tabs/Tabs";
 import { PricingCard } from "react-native-elements";
@@ -21,7 +20,6 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Đo đếm"
   };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -65,6 +63,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -73,12 +72,15 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
+
   componentDidMount() {
     this._bootstrapAsync();
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -297,7 +299,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       listTongSoCongTo = this.state.listDaTaChayHong.Series[0].data;
       listCongToMatChayHong = this.state.listDaTaChayHong.Series[1].data;
       listTiLeChayHong = this.state.listDaTaChayHong.Series[2].data;
-      if (this.state.SelectedDonVi < 6) {
+      if (this.state.SelectedDonVi.length < 6) {
         let PSoLuongKHCaoNhat = "";
         let PSoLuongKHThap = "";
         let PSoLuongKHChuaNiemChiCaoNhat = "";

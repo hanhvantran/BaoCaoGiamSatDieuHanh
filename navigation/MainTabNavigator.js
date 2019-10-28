@@ -40,12 +40,11 @@ import KiemTraHTDDScreen from "../screens/GiamSat/CongTacKiemTra/KiemTraHTDDScre
 
 //CSPK
 import CanhBaoCanRaSoatScreen from "../screens/GiamSat/CSPK/CanhBaoCanRaSoatScreen";
-import KHangLapTuBuScreen from "../screens/GiamSat/CSPK/KHangLapTuBuScreen";
+
 import KetQuaBanCSPKScreen from "../screens/GiamSat/CSPK/KetQuaBanCSPKScreen";
 
 //HTDD
 import KetQuaCapNhatChiNiemScreen from "../screens/GiamSat/HTDD/KetQuaCapNhatChiNiemScreen";
-import KetQuaGiamSatMDMSScreen from "../screens/GiamSat/HTDD/KetQuaGiamSatMDMSScreen";
 import KetQuaThayTheCongToQuaTaiScreen from "../screens/GiamSat/HTDD/KetQuaThayTheCongToQuaTaiScreen";
 import KetQuaThayTheTBDDScreen from "../screens/GiamSat/HTDD/KetQuaThayTheTBDDScreen";
 import TBDDChayHongScreen from "../screens/GiamSat/HTDD/TBDDChayHongScreen";
@@ -74,7 +73,6 @@ import NhanDinhTramCongCongScreen from "../screens/NhanDinh/NhanDinhTramCongCong
 import NhanDinhThongBaoScreen from "../screens/NhanDinh/NhanDinhThongBaoScreen";
 import NhanDinhThongBaoChiTietScreen from "../screens/NhanDinh/NhanDinhThongBaoChiTietScreen";
 import NhanDinhDoDoemScreen from "../screens/NhanDinh/NhanDinhDoDoemScreen";
-import SendPushNotification from "../screens/PushNotifications/SendPushNotification";
 
 const styles = StyleSheet.create({
   container: {
@@ -136,10 +134,8 @@ const GiamSatStack = createStackNavigator({
   GiamSatScreen: GiamSatScreen,
   KiemTraVien: KiemTraVienScreen,
   CanhBaoCanRaSoat: CanhBaoCanRaSoatScreen,
-  KHangLapTuBu: KHangLapTuBuScreen,
   KetQuaBanCSPK: KetQuaBanCSPKScreen,
   KetQuaCapNhatChiNiem: KetQuaCapNhatChiNiemScreen,
-  KetQuaGiamSatMDMS: KetQuaGiamSatMDMSScreen,
   KetQuaThayTheCongToQuaTai: KetQuaThayTheCongToQuaTaiScreen,
   KetQuaThayTheTBDD: KetQuaThayTheTBDDScreen,
   TBDDChayHong: TBDDChayHongScreen,
@@ -175,8 +171,7 @@ const ThongBaoStack = createStackNavigator({
   NhanDinhTramCongCongScreen: NhanDinhTramCongCongScreen,
   NhanDinhThongBaoScreen: NhanDinhThongBaoScreen,
   NhanDinhDoDoemScreen: NhanDinhDoDoemScreen,
-  NhanDinhThongBaoChiTietScreen: NhanDinhThongBaoChiTietScreen,
-  SendPushNotification: SendPushNotification
+  NhanDinhThongBaoChiTietScreen: NhanDinhThongBaoChiTietScreen
 });
 
 ThongBaoStack.navigationOptions = {

@@ -19,6 +19,7 @@ export default class SuDungDienTietKiemScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Sử dụng điện tiết kiệm"
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -95,8 +96,8 @@ export default class SuDungDienTietKiemScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -574,6 +575,7 @@ export default class SuDungDienTietKiemScreen extends React.PureComponent {
               javaScriptEnabled={true}
               domStorageEnabled={true}
             />
+
           </ScrollView>
         </View>
       </View>

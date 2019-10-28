@@ -86,7 +86,7 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
             spinner: false
           });
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
-          this.callMultiAPI2(this.state.SelectedDate, userData.mA_DVIQLY);
+          this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
       });
     } catch (error) {
@@ -116,8 +116,8 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -156,7 +156,7 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
       });
   };
 
-  callMultiAPI = async (vThangNam, vMaDonVi) => {
+  callMultiAPI2 = async (vThangNam, vMaDonVi) => {
     this.setState({
       spinner: true
     });
@@ -185,7 +185,7 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
       });
     });
   };
-  callMultiAPI2 = async (vThangNam, vMaDonVi) => {
+  callMultiAPI = async (vThangNam, vMaDonVi) => {
     this.setState({
       spinner: true
     });
@@ -229,10 +229,10 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
     return <StatusBar hidden />;
   }
   onChangedDonVi(itemValue) {
-    this.callMultiAPI2(this.state.SelectedDate, itemValue.key);
+    this.callMultiAPI(this.state.SelectedDate, itemValue.key);
   }
   onChangedDate(itemValue) {
-    this.callMultiAPI2(itemValue.key, this.state.SelectedDonVi);
+    this.callMultiAPI(itemValue.key, this.state.SelectedDonVi);
     //this.setState({ SelectedDate: itemValue });
   }
   render() {
@@ -781,7 +781,7 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
               />
             </View>
             <View style={styles.container2}>
-            <View style={{ backgroundColor: "orange", height: 1 }} />
+              <View style={{ backgroundColor: "orange", height: 1 }} />
               <Table borderStyle={{ borderWidth: 1 }}>
                 <Row
                   data={["Số trạm tổn thất trong khoảng", "TT hạ thế(%)"]}

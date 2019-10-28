@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 export default class TheoCapDienApScreen extends React.PureComponent {
@@ -94,8 +93,8 @@ export default class TheoCapDienApScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -149,13 +148,10 @@ export default class TheoCapDienApScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            
- {
-  this.setState({spinner: false});
-  Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-}
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({

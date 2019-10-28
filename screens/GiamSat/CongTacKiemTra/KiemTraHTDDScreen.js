@@ -63,6 +63,7 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -77,7 +78,9 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -94,8 +97,8 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -126,12 +129,12 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
             }
           );
         } else {
-          this.setState({spinner: false});
+          this.setState({ spinner: false });
           Alert.alert("Thông báo", "Không có dữ liệu!");
         }
       })
       .catch(error => {
-        this.setState({spinner: false});
+        this.setState({ spinner: false });
         Alert.alert("Lỗi kết nối!", error.toString());
       });
   };
@@ -151,12 +154,10 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            {
-              this.setState({spinner: false});
-              Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-            }
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -227,11 +228,13 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
 
       let intViPhamLuyKe = 0;
       for (let i = 0; i < this.state.listDaTa1.Series[4].data.length; i++) {
-        intViPhamLuyKe = intViPhamLuyKe + this.state.listDaTa1.Series[4].data[i];
+        intViPhamLuyKe =
+          intViPhamLuyKe + this.state.listDaTa1.Series[4].data[i];
       }
       let intViPhamHCLuyKe = 0;
       for (let i = 0; i < this.state.listDaTa1.Series[5].data.length; i++) {
-        intViPhamHCLuyKe = intViPhamHCLuyKe + this.state.listDaTa1.Series[5].data[i];
+        intViPhamHCLuyKe =
+          intViPhamHCLuyKe + this.state.listDaTa1.Series[5].data[i];
       }
       let intKhongViPhamLuyKe = 0;
       for (let i = 0; i < this.state.listDaTa1.Series[6].data.length; i++) {
@@ -295,7 +298,7 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
         enabled: false
       },
       xAxis: {
-        categories:varCategories1
+        categories: varCategories1
       },
       series: [
         {
@@ -352,14 +355,14 @@ export default class KiemTraHTDDScreen extends React.PureComponent {
           ? this.state.listDaTa1.Series
           : [],
 
-          plotOptions: {
-            column: {
-              dataLabels: {
-                format: "{point.y:,.0f} ",
-                enabled: true
-              }
-            }
-          },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.0f} ",
+            enabled: true
+          }
+        }
+      },
       exporting: {
         showTable: true
       },

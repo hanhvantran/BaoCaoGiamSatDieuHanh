@@ -104,9 +104,9 @@ export default class NhanDinhThongBaoChiTietScreen extends React.PureComponent {
     );
   }
   render() {
-    const { navigation } = this.props;  
-    const receive  = navigation.getParam('data', 'No data found!'); 
-    console.log('receive:', receive); 
+    const { navigation } = this.props;
+    const receive = navigation.getParam("data", "No data found!");
+    console.log("receive:", receive);
     return (
       <View style={styles.list}>
         <ListView

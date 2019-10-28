@@ -20,7 +20,7 @@ export default class TBDDChayHongScreen extends React.PureComponent {
   static navigationOptions = {
     title: "TBĐĐ cháy hỏng"
   };
-
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -71,16 +71,14 @@ export default class TBDDChayHongScreen extends React.PureComponent {
             spinner: false
           });
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
-          this.sp_TTDDMatChayHong(
-            this.state.SelectedDonVi,
-            this.state.SelectedDate
-          );
+          this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
       });
     } catch (error) {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
+
   componentDidMount() {
     this._bootstrapAsync();
     this.getOrientation();
@@ -104,8 +102,8 @@ export default class TBDDChayHongScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -145,7 +143,7 @@ export default class TBDDChayHongScreen extends React.PureComponent {
         Alert.alert("Lỗi kết nối!", error.toString());
       });
   };
-  sp_TTDDMatChayHong = (DONVI, THANGNAM, GIATRI) => {
+  callMultiAPI = (THANGNAM, DONVI) => {
     this.setState({
       spinner: true
     });
@@ -169,7 +167,7 @@ export default class TBDDChayHongScreen extends React.PureComponent {
             spinner: false
           });
         } else {
-          this.setState({spinner: false});
+          this.setState({ spinner: false });
           Alert.alert("Thông báo", "Không có dữ liệu!");
         }
       })
@@ -184,10 +182,10 @@ export default class TBDDChayHongScreen extends React.PureComponent {
     return <StatusBar hidden />;
   }
   onChangedDonVi(itemValue) {
-    this.sp_TTDDMatChayHong(itemValue.key, this.state.SelectedDate, 1);
+    this.callMultiAPI(this.state.SelectedDate, itemValue.key);
   }
   onChangedDate(itemValue) {
-    this.sp_TTDDMatChayHong(this.state.SelectedDonVi, itemValue.key, 2);
+    this.callMultiAPI(itemValue.key, this.state.SelectedDonVi);
     //this.setState({ SelectedDate: itemValue });
   }
   numberWithCommas(x) {

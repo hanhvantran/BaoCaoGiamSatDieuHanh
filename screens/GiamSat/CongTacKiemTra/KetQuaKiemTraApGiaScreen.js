@@ -18,6 +18,7 @@ export default class KetQuaKiemTraApGiaScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Kiểm tra áp giá"
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -64,12 +65,12 @@ export default class KetQuaKiemTraApGiaScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
       });
     } catch (error) {
-      this.setState({ spinner: false });
       Alert.alert("AsyncStorage error", error.message);
     }
   };
@@ -79,7 +80,9 @@ export default class KetQuaKiemTraApGiaScreen extends React.PureComponent {
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -96,8 +99,8 @@ export default class KetQuaKiemTraApGiaScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -158,7 +161,7 @@ export default class KetQuaKiemTraApGiaScreen extends React.PureComponent {
           .then(this.parseJSON)
           .catch(error => {
             this.setState({ spinner: false });
-            Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
           })
       )
     ).then(data => {

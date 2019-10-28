@@ -31,6 +31,7 @@ export default class NhanDinhScreen extends React.PureComponent {
       this.getOrientation();
     });
   }
+
   getOrientation = () => {
     if (this.refs.rootView) {
       if (Dimensions.get("window").width < Dimensions.get("window").height) {
@@ -94,7 +95,13 @@ export default class NhanDinhScreen extends React.PureComponent {
       }
     ];
     return (
-      <View style={styles.container}>
+      <View
+        style={
+          this.state.screenheight > this.state.screenwidth
+            ? styles.container
+            : styles.container2
+        }
+      >
         {Platform.OS === "ios" && <StatusBar barStyle="default" />}
         <View style={styles.chartBlock}>
           <Dashboard
@@ -116,7 +123,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ecf0f1",
     paddingTop: 30
-   
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: "#ecf0f1",
+    paddingTop: 0
   },
   chartBlock: {
     flex: 1,

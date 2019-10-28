@@ -13,13 +13,13 @@ import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
 import ChartView from "react-native-highcharts";
 //import { getListTenDonVi, getTenDonVi } from "../../../data/dmdonvi";
+
 import Spinner from "react-native-loading-spinner-overlay";
 import { Card } from "react-native-elements";
 export default class KetQuaCapNhatChiNiemScreen extends React.PureComponent {
   static navigationOptions = {
     title: "HTĐĐ chưa niêm chì"
   };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -65,11 +65,9 @@ export default class KetQuaCapNhatChiNiemScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
-          this.get_ThongKeChiNiem(
-            this.state.SelectedDonVi,
-            this.state.SelectedDate
-          );
+          this.callMultiAPI(this.state.SelectedDate, this.state.SelectedDonVi);
         }
       });
     } catch (error) {
@@ -99,8 +97,8 @@ export default class KetQuaCapNhatChiNiemScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -140,7 +138,7 @@ export default class KetQuaCapNhatChiNiemScreen extends React.PureComponent {
         Alert.alert("Lỗi kết nối!", error.toString());
       });
   };
-  get_ThongKeChiNiem = (DONVI, THANGNAM, GIATRI) => {
+  callMultiAPI = (THANGNAM, DONVI) => {
     this.setState({
       spinner: true
     });
@@ -164,7 +162,7 @@ export default class KetQuaCapNhatChiNiemScreen extends React.PureComponent {
             spinner: false
           });
         } else {
-          this.setState({spinner: false});
+          this.setState({ spinner: false });
           Alert.alert("Thông báo", "Không có dữ liệu!");
         }
       })
@@ -179,10 +177,10 @@ export default class KetQuaCapNhatChiNiemScreen extends React.PureComponent {
     return <StatusBar hidden />;
   }
   onChangedDonVi(itemValue) {
-    this.get_ThongKeChiNiem(itemValue.key, this.state.SelectedDate, 1);
+    this.callMultiAPI(this.state.SelectedDate, itemValue.key);
   }
   onChangedDate(itemValue) {
-    this.get_ThongKeChiNiem(this.state.SelectedDonVi, itemValue.key, 2);
+    this.callMultiAPI(itemValue.key, this.state.SelectedDonVi);
     //this.setState({ SelectedDate: itemValue });
   }
   numberWithCommas(x) {

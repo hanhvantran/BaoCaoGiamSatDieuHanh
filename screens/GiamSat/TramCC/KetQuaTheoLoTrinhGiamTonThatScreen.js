@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -142,8 +141,11 @@ export default class KetQuaTheoLoTrinhGiamTonThatScreen extends React.PureCompon
           .then(this.parseJSON)
           .catch(function(err) {
             {
-              this.setState({spinner: false});
-              Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
+              this.setState({ spinner: false });
+              Alert.alert(
+                "Loi: " + url.replace(urlBaoCao.IP, ""),
+                error.message
+              );
             }
           })
       )
@@ -437,7 +439,7 @@ export default class KetQuaTheoLoTrinhGiamTonThatScreen extends React.PureCompon
             lineColor: "orange",
             fillColor: "white"
           }
-         // colorByPoint: true
+          // colorByPoint: true
         }
       ],
       plotOptions: {
@@ -468,7 +470,7 @@ export default class KetQuaTheoLoTrinhGiamTonThatScreen extends React.PureCompon
       },
       lang: {
         thousandsSep: ".",
-        decimalPoint: ','
+        decimalPoint: ","
       }
     };
     let listDonViQuanLy = [];

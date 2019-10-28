@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 export default class KhachHangKhaiThacBaGiaScreen extends React.PureComponent {
@@ -115,12 +114,11 @@ export default class KhachHangKhaiThacBaGiaScreen extends React.PureComponent {
       });
   };
 
-  callMultiAPI = async (vMaDonVi) => {
+  callMultiAPI = async vMaDonVi => {
     this.setState({
       spinner: true
     });
-    let param1 =
-      "?MaDonVi=" + vMaDonVi ;
+    let param1 = "?MaDonVi=" + vMaDonVi;
 
     const urls = [urlBaoCao.GET_KhachHangKhaiThac3Gia + param1];
     Promise.all(
@@ -128,13 +126,10 @@ export default class KhachHangKhaiThacBaGiaScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            
- {
-  this.setState({spinner: false});
-  Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-}
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({

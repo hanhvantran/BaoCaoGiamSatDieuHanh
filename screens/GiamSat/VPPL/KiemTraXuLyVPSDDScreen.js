@@ -15,7 +15,6 @@ import urlBaoCao from "../../../networking/services";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 
-
 export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Kiểm tra xử lý VPSDĐ"
@@ -65,6 +64,7 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -96,8 +96,8 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -151,12 +151,10 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            {
-              this.setState({spinner: false});
-              Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-            }
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -225,22 +223,30 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
     let varCategories1 = [];
     let varCategories2 = [];
 
-    if (this.state.listDaTa && !Array.isArray(this.state.listDaTa) && this.state.listDaTa.Series!=null) {
+    if (
+      this.state.listDaTa &&
+      !Array.isArray(this.state.listDaTa) &&
+      this.state.listDaTa.Series != null
+    ) {
       let intSoBBanKtraThang = 0;
       for (let i = 0; i < this.state.listDaTa.Series[0].data.length; i++) {
-        intSoBBanKtraThang = intSoBBanKtraThang + this.state.listDaTa.Series[0].data[i];
+        intSoBBanKtraThang =
+          intSoBBanKtraThang + this.state.listDaTa.Series[0].data[i];
       }
       let intSOBBanViPhamThang = 0;
       for (let i = 0; i < this.state.listDaTa.Series[1].data.length; i++) {
-        intSOBBanViPhamThang = intSOBBanViPhamThang + this.state.listDaTa.Series[1].data[i];
+        intSOBBanViPhamThang =
+          intSOBBanViPhamThang + this.state.listDaTa.Series[1].data[i];
       }
       let intSoBBanKtraLuyKe = 0;
       for (let i = 0; i < this.state.listDaTa.Series[7].data.length; i++) {
-        intSoBBanKtraLuyKe = intSoBBanKtraLuyKe + this.state.listDaTa.Series[7].data[i];
+        intSoBBanKtraLuyKe =
+          intSoBBanKtraLuyKe + this.state.listDaTa.Series[7].data[i];
       }
       let intSOBBanViPhamLuyKe = 0;
       for (let i = 0; i < this.state.listDaTa.Series[8].data.length; i++) {
-        intSOBBanViPhamLuyKe = intSOBBanViPhamLuyKe + this.state.listDaTa.Series[8].data[i];
+        intSOBBanViPhamLuyKe =
+          intSOBBanViPhamLuyKe + this.state.listDaTa.Series[8].data[i];
       }
       varCategories1.push("Vi phạm trong tháng");
       varCategories1.push("Kiểm tra trong tháng");
@@ -265,9 +271,10 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
       }
       let intSoTienLuyKe = 0;
       for (let i = 0; i < this.state.listDaTa.Series[12].data.length; i++) {
-        intSoTienLuyKe = intSoTienLuyKe + this.state.listDaTa.Series[12].data[i];
+        intSoTienLuyKe =
+          intSoTienLuyKe + this.state.listDaTa.Series[12].data[i];
       }
-      
+
       varCategories2.push("kWh tháng");
       varCategories2.push("kWh luỹ kế");
       varCategories2.push("Số tiền tháng");
@@ -306,7 +313,7 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
         enabled: false
       },
       xAxis: {
-        categories:varCategories1
+        categories: varCategories1
       },
       series: [
         {
@@ -353,7 +360,7 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
         enabled: false
       },
       xAxis: {
-        categories:varCategories2
+        categories: varCategories2
       },
       series: [
         {
@@ -472,7 +479,8 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
           }
         ]
       }
-    };var conf5 = {
+    };
+    var conf5 = {
       chart: {
         type: "column",
         zoomType: "xy"
@@ -516,7 +524,8 @@ export default class KiemTraXuLyVPSDDScreen extends React.PureComponent {
           }
         ]
       }
-    };var conf6 = {
+    };
+    var conf6 = {
       chart: {
         type: "column",
         zoomType: "xy"

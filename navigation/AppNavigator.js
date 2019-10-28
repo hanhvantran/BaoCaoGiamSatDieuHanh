@@ -9,7 +9,7 @@ import MainTabNavigator from "./MainTabNavigator";
 //import HomeScreen from "../screens/HomeScreen";
 //import GiamSatScreen from "../screens/GiamSatScreen";
 //import KinhDoanhScreen from "../screens/KinhDoanhScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+//import SettingsScreen from "../screens/SettingsScreen";
 //import NhanDinhScreen from "../screens/NhanDinhScreen";
 import LoginScreen from "../LoginScreen";
 //const LoginPage = createStackNavigator({ LoginScreen: LoginScreen });
@@ -24,7 +24,7 @@ export default createAppContainer(
       // KinhDoanhScreen: KinhDoanhScreen,
       // GiamSatScreen: GiamSatScreen,
       //  NhanDinhScreen: NhanDinhScreen,
-      SettingsScreen: SettingsScreen,
+      //SettingsScreen: SettingsScreen,
       LoginScreen: LoginScreen
     },
     {

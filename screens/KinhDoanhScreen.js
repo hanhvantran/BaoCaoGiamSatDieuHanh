@@ -18,12 +18,12 @@ import ActionButton from "react-native-action-button";
 import Dashboard from "react-native-dashboard";
 import Icon from "react-native-vector-icons/Ionicons";
 
-
 export default class KinhDoanhScreen extends React.PureComponent {
   static navigationOptions = {
     title: null,
     header: null
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +36,7 @@ export default class KinhDoanhScreen extends React.PureComponent {
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
       this.getOrientation();
     });

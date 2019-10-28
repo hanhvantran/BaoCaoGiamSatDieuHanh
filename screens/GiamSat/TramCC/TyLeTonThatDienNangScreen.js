@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 export default class TyLeTonThatDienNangScreen extends React.PureComponent {
@@ -94,8 +93,8 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -149,12 +148,10 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            {
-              this.setState({spinner: false});
-              Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-            }
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -227,12 +224,16 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        decimalPoint: ','
+        decimalPoint: ","
       }
     };
     let list3 = [];
     let varLabel3 = [];
-    if (this.state.listDaTa && !Array.isArray(this.state.listDaTa) && this.state.listDaTa.Series!=null) {
+    if (
+      this.state.listDaTa &&
+      !Array.isArray(this.state.listDaTa) &&
+      this.state.listDaTa.Series != null
+    ) {
       let arrayHienTai = this.state.listDaTa.Series[0].data;
       let arrayCungKy = this.state.listDaTa.Series[1].data;
       let arrayLuyKe = this.state.listDaTa.Series[2].data;
@@ -302,14 +303,14 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         this.state.listDaTa && !Array.isArray(this.state.listDaTa)
           ? this.state.listDaTa.Series
           : [],
-          plotOptions: {
-            column: {
-              dataLabels: {
-                format: "{point.y:,.0f} ",
-                enabled: true
-              }
-            }
-          },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.0f} ",
+            enabled: true
+          }
+        }
+      },
       responsive: {
         rules: [
           {

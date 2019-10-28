@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -52,18 +51,20 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
           var { navigate } = this.props.navigation;
           navigate("LoginScreen");
         } else {
-          this.setState({
-            FULLNAME: userData.fullname,
-            MA_DVICTREN: userData.mA_DVICTREN,
-            MA_DVIQLY: userData.mA_DVIQLY,
-            TEN_DVIQLY: userData.mA_DVIQLY + " - " + userData.teN_DVIQLY,
-            TEN_DVIQLY2: userData.teN_DVIQLY2,
-            USERID: userData.userid,
-            USERNAME: userData.username,
-            CAP_DVI: userData.caP_DVI,
-            SelectedDonVi: userData.mA_DVIQLY,
-            spinner: false
-          });
+          
+            this.setState({
+              FULLNAME: userData.fullname,
+              MA_DVICTREN: userData.mA_DVICTREN,
+              MA_DVIQLY: userData.mA_DVIQLY,
+              TEN_DVIQLY: userData.mA_DVIQLY + " - " + userData.teN_DVIQLY,
+              TEN_DVIQLY2: userData.teN_DVIQLY2,
+              USERID: userData.userid,
+              USERNAME: userData.username,
+              CAP_DVI: userData.caP_DVI,
+              SelectedDonVi: userData.mA_DVIQLY,
+              spinner: false
+            });
+          
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -74,11 +75,14 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
   };
 
   componentDidMount() {
+
     this._bootstrapAsync();
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
-      this.setState({ screenheight: height, screenwidth: width });
+      
+        this.setState({ screenheight: height, screenwidth: width });
+      
       this.getOrientation();
     });
     this.initListDate();
@@ -86,17 +90,21 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
   getOrientation = () => {
     if (this.refs.rootView) {
       if (Dimensions.get("window").width < Dimensions.get("window").height) {
-        this.setState({ orientation: "portrait" });
+        
+          this.setState({ orientation: "portrait" });
+        
       } else {
-        this.setState({ orientation: "landscape" });
+        
+          this.setState({ orientation: "landscape" });
+        
       }
     }
   };
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -104,9 +112,7 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
     }
     return arrayData;
   }
-  get_Info_Dvi_ChaCon = (Donvi, CapDonVi) => 
-  {
-  
+  get_Info_Dvi_ChaCon = (Donvi, CapDonVi) => {
     let capDonVi = Donvi == "PB" ? 0 : CapDonVi == 2 ? 4 : 3;
     return fetch(
       urlBaoCao.get_Info_Dvi_ChaCon +
@@ -152,13 +158,10 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-           
- {
-  this.setState({spinner: false});
-  Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-}
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -229,7 +232,7 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
       },
       lang: {
         thousandsSep: ".",
-        decimalPoint: ','
+        decimalPoint: ","
       }
     };
     var conf3 = {

@@ -30,9 +30,10 @@ export default class SettingsScreen extends React.PureComponent {
       changedPage: null
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     this._bootstrapAsync();
   }
+
   _bootstrapAsync = async () => {
     try {
       // console.log("this.props.navigation", this.props.navigation);

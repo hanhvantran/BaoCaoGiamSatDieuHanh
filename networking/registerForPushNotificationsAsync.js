@@ -1,6 +1,6 @@
-import {  Notifications } from "expo";
-import * as Permissions  from "expo-permissions";
-import * as firebase from "firebase";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+//import * as firebase from "firebase";
 import urlBaoCao from "../networking/services";
 /*
 firebase.initializeApp({
@@ -23,28 +23,28 @@ export default (async function registerForPushNotificationsAsync() {
   }
   // Get the token that uniquely identifies this device
   let token = await Notifications.getExpoPushTokenAsync();
-  if (firebase.auth().currentUser != null) {
-    email = firebase.auth().currentUser.email;
-    userID = firebase.auth().currentUser.uid;
+  // if (firebase.auth().currentUser != null) {
+  //   email = firebase.auth().currentUser.email;
+  //   userID = firebase.auth().currentUser.uid;
 
-    firebase
-      .database()
-      .ref("/users/" + userID)
-      .update({ token: token });
-    return fetch(
-      "http://10.170.215.68/APIGiamSat/api/UpdateToKen" +
-        "?pToKen=" +
-        token +
-        "&pEmail=" +
-        email +
-        ""
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-       // console.log("UpdateToKen:", "OK");
-      })
-      .catch(error => {
-      //  console.log("UpdateToKen:", error);
-      });
-  }
+  //   firebase
+  //     .database()
+  //     .ref("/users/" + userID)
+  //     .update({ token: token });
+  //   return fetch(
+  //     "http://10.170.215.68/APIGiamSat/api/UpdateToKen" +
+  //       "?pToKen=" +
+  //       token +
+  //       "&pEmail=" +
+  //       email +
+  //       ""
+  //   )
+  //     .then(response => response.json())
+  //     .then(responseJson => {
+  //      // console.log("UpdateToKen:", "OK");
+  //     })
+  //     .catch(error => {
+  //     //  console.log("UpdateToKen:", error);
+  //     });
+  // }
 });

@@ -72,7 +72,6 @@ export default class GiamSatScreen extends React.PureComponent {
     // title: null,
     header: null
   };
-
   constructor() {
     super();
     this.updateIndex = this.updateIndex.bind(this);
@@ -84,6 +83,7 @@ export default class GiamSatScreen extends React.PureComponent {
       selectedDashboard: true
     };
   }
+
   componentDidMount() {
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
@@ -659,10 +659,7 @@ export default class GiamSatScreen extends React.PureComponent {
           <Touchable
             style={styles.option}
             background={Touchable.Ripple("#ccc", false)}
-            onPress={this._handlePressLoadPage.bind(
-              this,
-              "TheoDienThuongPham"
-            )}
+            onPress={this._handlePressLoadPage.bind(this, "TheoDienThuongPham")}
           >
             <View style={{ flexDirection: "row" }}>
               <View style={styles.optionIconContainer}>
@@ -677,10 +674,7 @@ export default class GiamSatScreen extends React.PureComponent {
           <Touchable
             background={Touchable.Ripple("#ccc", false)}
             style={styles.option}
-            onPress={this._handlePressLoadPage.bind(
-              this,
-              "SuDungDienTietKiem"
-            )}
+            onPress={this._handlePressLoadPage.bind(this, "SuDungDienTietKiem")}
           >
             <View style={{ flexDirection: "row" }}>
               <View style={styles.optionIconContainer}>

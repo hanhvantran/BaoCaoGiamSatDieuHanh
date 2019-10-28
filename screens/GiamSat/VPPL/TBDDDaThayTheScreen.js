@@ -11,10 +11,8 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
-//import { getTenDonVi } from "../../../data/dmdonvi";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
-
 
 export default class TBDDDaThayTheScreen extends React.PureComponent {
   static navigationOptions = {
@@ -96,8 +94,8 @@ export default class TBDDDaThayTheScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -151,12 +149,10 @@ export default class TBDDDaThayTheScreen extends React.PureComponent {
         fetch(url)
           .then(this.checkStatus)
           .then(this.parseJSON)
-          .catch(error =>
-            {
-              this.setState({spinner: false});
-              Alert.alert("Loi: "+ url.replace(urlBaoCao.IP, "") , error.message);
-            }
-          )
+          .catch(error => {
+            this.setState({ spinner: false });
+            Alert.alert("Loi: " + url.replace(urlBaoCao.IP, ""), error.message);
+          })
       )
     ).then(data => {
       this.setState({
@@ -225,7 +221,11 @@ export default class TBDDDaThayTheScreen extends React.PureComponent {
     let varCategories1 = [];
     let varCategories2 = [];
 
-    if (this.state.listDaTa && !Array.isArray(this.state.listDaTa) && this.state.listDaTa.Series!=null) {
+    if (
+      this.state.listDaTa &&
+      !Array.isArray(this.state.listDaTa) &&
+      this.state.listDaTa.Series != null
+    ) {
       /*
       let haI_SAU = 0,
         haI_SAU_HT = 0,
@@ -353,12 +353,11 @@ export default class TBDDDaThayTheScreen extends React.PureComponent {
       let Thang = this.state.SelectedDate.split("/")[0];
       let Nam = this.state.SelectedDate.split("/")[1];
       var ld = new Date(Nam, Thang, 0).getDate();
-      var lastday = ld +"/"+Thang+"/"+Nam;
+      var lastday = ld + "/" + Thang + "/" + Nam;
       varCategories2.push("Quá hạn - Ngoài sinh hoạt " + lastday);
       varCategories2.push("Quá hạn - Sinh hoạt " + lastday);
       varCategories2.push("Quá hạn - Ngoài sinh hoạt 31/12/" + Nam);
       varCategories2.push("Quá hạn - Sinh hoạt 31/12/" + Nam);
-
     }
     var conf1 = {
       chart: {
@@ -377,7 +376,7 @@ export default class TBDDDaThayTheScreen extends React.PureComponent {
         enabled: false
       },
       xAxis: {
-        categories:varCategories1
+        categories: varCategories1
       },
       series: [
         {
@@ -517,7 +516,7 @@ export default class TBDDDaThayTheScreen extends React.PureComponent {
         enabled: false
       },
       xAxis: {
-        categories:varCategories2
+        categories: varCategories2
       },
       series: [
         {

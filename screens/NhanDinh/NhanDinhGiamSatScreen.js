@@ -12,7 +12,6 @@ import {
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../networking/services";
 import ChartView from "react-native-highcharts";
-//import { getTenDonVi } from "../../data/dmdonvi";
 import Spinner from "react-native-loading-spinner-overlay";
 //import Tabs from "../Tabs/Tabs";
 import { PricingCard } from "react-native-elements";
@@ -21,7 +20,6 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Giám sát"
   };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -67,6 +65,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -75,6 +74,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
+
   componentDidMount() {
     this._bootstrapAsync();
     this.getOrientation();
@@ -250,6 +250,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       listCongToQuaHan = this.state.listDaTaCto.Series[12].data;
       listCongToVanHanh = this.state.listDaTaCto.Series[13].data;
       listTiLeQuaHan = this.state.listDaTaCto.Series[14].data;
+      console.log("listTiLeQuaHan", listTiLeQuaHan);
     }
     //TU,TI
     let intVHTU = 0;
@@ -345,7 +346,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       listHopDongDenHan = this.state.listDaTaHopDong.Series[7].data;
       listHopDong = this.state.listDaTaHopDong.Series[6].data;
       listTiLeHopDongQuaHan = this.state.listDaTaHopDong.Series[8].data;
-      if (this.state.SelectedDonVi < 6) {
+      if (this.state.SelectedDonVi.length < 6) {
         let PCongToQuaHanCaoNhat = "";
         let PCongToQuaHanThapNhat = "";
         let PTiLeCongToQuaHanCaoNhat = "";
@@ -1083,22 +1084,16 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           <View
             style={{
               flex: 1,
-              paddingTop: -50,
-              flexDirection: "row",
-              height: 90
+              height: width >= 800 ? 120 : 240,
+              flexDirection: width >= 800 ? "row" : "column",
+              paddingTop: -60
             }}
           >
-            {/* <View
-            style={{
-              flex: 1,
-              height: width >= 800 ? 10 : 120,
-              flexDirection: width >= 800 ? "row" : "column"
-            }}
-          > */}
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: "row",
+                height: 120
               }}
             >
               <View style={{ flex: 1 }}>
@@ -1135,10 +1130,12 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 />
               </View>
             </View>
+            <View style={{ paddingTop: 70, height: 1 }} />
             <View
               style={{
                 flex: 1,
-                flexDirection: "row"
+                flexDirection: "row",
+                height: 120
                 //   paddingTop: width >= 800 ? 0 : 200
               }}
             >
@@ -1167,7 +1164,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
               </View>
             </View>
           </View>
-          <View style={{ flex: 1, paddingTop: 80 }}></View>
+          <View style={{ paddingTop: 70, height: 1 }} />
           <View style={{ backgroundColor: "orange", height: 1 }} />
           <ChartView
             style={{ height: 500, width: width }}

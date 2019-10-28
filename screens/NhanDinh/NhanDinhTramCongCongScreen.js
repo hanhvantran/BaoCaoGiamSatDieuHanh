@@ -12,7 +12,6 @@ import {
 import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../networking/services";
 import ChartView from "react-native-highcharts";
-//import { getTenDonVi } from "../../data/dmdonvi";
 import Spinner from "react-native-loading-spinner-overlay";
 import Tabs from "../Tabs/Tabs";
 import { PricingCard } from "react-native-elements";
@@ -21,7 +20,6 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Trạm công cộng"
   };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -67,6 +65,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
             SelectedDonVi: userData.mA_DVIQLY,
             spinner: false
           });
+
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
           this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
@@ -75,12 +74,15 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
+
   componentDidMount() {
     this._bootstrapAsync();
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
     this.initListDate();
@@ -97,8 +99,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -275,7 +277,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
               : ((PTramKiemTra * 100) / PTramNgoaiChuan).toFixed(2)
           )
         ) + " %";
-      if (this.state.SelectedDonVi < 6) {
+      if (this.state.SelectedDonVi.length < 6) {
         let index = listTramNgoaiChuan.indexOf(Math.max(...listTramNgoaiChuan));
         PDonViVuotNguongCaoNhat =
           "Đơn vị có số trạm vượt ngưỡng cao nhất: " +
@@ -858,8 +860,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 color="#4f9deb"
                 title="Số trạm"
                 price={this.numberWithCommas(PTongSoTram)}
-                titleStyle={{ fontSize: 12 }}
-                pricingStyle={{ fontSize: 12 }}
+                titleStyle={{ fontSize: 11 }}
+                pricingStyle={{ fontSize: 11 }}
                 // info={["1 User", "Basic Support", "All Core Features"]}
                 button={{ title: "", icon: "dashboard" }}
               />
@@ -869,8 +871,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 color="red"
                 title="<=1% và >7%"
                 price={this.numberWithCommas(PTramNgoaiChuan)}
-                titleStyle={{ fontSize: 10 }}
-                pricingStyle={{ fontSize: 12 }}
+                titleStyle={{ fontSize: 11 }}
+                pricingStyle={{ fontSize: 11 }}
                 fontSize="22"
                 // info={["1 User", "Basic Support", "All Core Features"]}
                 button={{ title: "", icon: "dashboard" }}
@@ -881,8 +883,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 color="green"
                 title="Tỉ lệ"
                 price={PTiLe}
-                titleStyle={{ fontSize: 12 }}
-                pricingStyle={{ fontSize: 12 }}
+                titleStyle={{ fontSize: 11 }}
+                pricingStyle={{ fontSize: 11 }}
                 // info={["1 User", "Basic Support", "All Core Features"]}
                 button={{ title: "", icon: "dashboard" }}
               />
@@ -947,8 +949,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 color="#4f9deb"
                 title="Ngoài chuẩn"
                 price={PTramNgoaiChuan}
-                titleStyle={{ fontSize: 12 }}
-                pricingStyle={{ fontSize: 12 }}
+                titleStyle={{ fontSize: 11 }}
+                pricingStyle={{ fontSize: 11 }}
                 // info={["1 User", "Basic Support", "All Core Features"]}
                 button={{ title: "", icon: "dashboard" }}
               />
@@ -958,8 +960,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 color="red"
                 title="Kiểm tra"
                 price={PTramKiemTra}
-                titleStyle={{ fontSize: 10 }}
-                pricingStyle={{ fontSize: 12 }}
+                titleStyle={{ fontSize: 11 }}
+                pricingStyle={{ fontSize: 11 }}
                 fontSize="22"
                 // info={["1 User", "Basic Support", "All Core Features"]}
                 button={{ title: "", icon: "dashboard" }}
@@ -970,8 +972,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 color="green"
                 title="Tỉ lệ"
                 price={PTiLeKiemTra}
-                titleStyle={{ fontSize: 12 }}
-                pricingStyle={{ fontSize: 12 }}
+                titleStyle={{ fontSize: 11 }}
+                pricingStyle={{ fontSize: 11 }}
                 // info={["1 User", "Basic Support", "All Core Features"]}
                 button={{ title: "", icon: "dashboard" }}
               />

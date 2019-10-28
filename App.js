@@ -1,28 +1,27 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import { AppLoading } from 'expo';
-import * as Font from 'expo-font';
-import { Asset } from 'expo-asset';
-import { Ionicons } from '@expo/vector-icons';
+import { AppLoading } from "expo";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
+import { Ionicons } from "@expo/vector-icons";
 
 import AppNavigator from "./navigation/AppNavigator";
 
-import * as firebase from 'firebase';
-// Initialize Firebase
-const firebaseConfig = {
-    // ADD YOUR FIREBASE CREDENTIALS
-    apiKey: "AIzaSyC0ig_Xf3vWb50G7PxA8NinNocEhPqq6uM",
-    authDomain: "baocaogiamsatdieuhanh.firebaseapp.com",
-    databaseURL: "https://baocaogiamsatdieuhanh.firebaseio.com",
-    projectId: "baocaogiamsatdieuhanh",
-    storageBucket: "baocaogiamsatdieuhanh.appspot.com",
-    messagingSenderId: "398286399580",
-    appId: "1:398286399580:web:edf2a70af0b3c997"
-};
-firebase.initializeApp(firebaseConfig);
+// import * as firebase from 'firebase';
+// // Initialize Firebase
+// const firebaseConfig = {
+//     // ADD YOUR FIREBASE CREDENTIALS
+//     apiKey: "AIzaSyC0ig_Xf3vWb50G7PxA8NinNocEhPqq6uM",
+//     authDomain: "baocaogiamsatdieuhanh.firebaseapp.com",
+//     databaseURL: "https://baocaogiamsatdieuhanh.firebaseio.com",
+//     projectId: "baocaogiamsatdieuhanh",
+//     storageBucket: "baocaogiamsatdieuhanh.appspot.com",
+//     messagingSenderId: "398286399580",
+//     appId: "1:398286399580:web:edf2a70af0b3c997"
+// };
+// firebase.initializeApp(firebaseConfig);
 export default class App extends React.Component {
   constructor(props) {
-    
     super(props);
   }
   state = {
@@ -49,10 +48,10 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([
-        require("./assets/images/robot-dev.png"),
-        require("./assets/images/robot-prod.png")
-      ]),
+      //  Asset.loadAsync([
+      //   require("./assets/images/robot-dev.png"),
+      //  require("./assets/images/robot-prod.png")
+      //  ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Ionicons.font,
@@ -79,5 +78,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff"
   }
-  
 });

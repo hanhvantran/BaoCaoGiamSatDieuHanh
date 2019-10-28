@@ -13,9 +13,8 @@ import urlBaoCao from "../networking/services";
 import ChartView from "react-native-highcharts";
 import ButtonCustom from "../components/ButtonCustom";
 import Spinner from "react-native-loading-spinner-overlay";
-import registerForPushNotificationsAsync from "../networking/registerForPushNotificationsAsync";
 import { Notifications } from "expo";
-import * as firebase from "firebase";
+import * as Permissions from "expo-permissions";
 import { YellowBox } from "react-native";
 import _ from "lodash";
 ////"main": "node_modules/expo/AppEntry.js",
@@ -61,6 +60,48 @@ export default class HomeScreen extends React.PureComponent {
       lblNoiDung: ""
     };
   }
+  async registerForPushNotificationsAsync(TaiKhoan, DonVi) {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== "granted") {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== "granted") {
+      return;
+    }
+
+    // Get the token that uniquely identifies this device
+    let token = await Notifications.getExpoPushTokenAsync();
+    AsyncStorage.setItem("UserToken", token);
+    return fetch(
+      urlBaoCao.sp_UpdateToKen +
+        "?pToKen=" +
+        token +
+        "&PMaDonVi=" +
+        DonVi +
+        "&PTaiKhoan=" +
+        TaiKhoan +
+        ""
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        //console.log("UpdateToKen:", "OK");
+      })
+      .catch(error => {
+        // console.log("UpdateToKen:", error);
+      });
+    // POST the token to your backend server from where you can retrieve it to send push notifications.
+  }
   _bootstrapAsync = async () => {
     try {
       AsyncStorage.getItem("UserInfomation").then(user_data_json => {
@@ -70,6 +111,7 @@ export default class HomeScreen extends React.PureComponent {
           navigate("LoginScreen");
         } else {
           let Nam = new Date().getFullYear();
+
           this.setState({
             FULLNAME: userData.fullname,
             MA_DVICTREN: userData.mA_DVICTREN,
@@ -84,13 +126,11 @@ export default class HomeScreen extends React.PureComponent {
             spinner: false,
             lblNoiDung: userData.teN_DVIQLY2 + " - BÁO CÁO TỔNG HỢP NĂM " + Nam
           });
-          //  console.log('userData.email', userData.email);
-          //  console.log('userData.passwordfb', userData.passwordfb);
-          this._notificationSubscription = this._registerForPushNotifications(
-            userData.email,
-            userData.passwordfb
+          this.registerForPushNotificationsAsync(
+            userData.username,
+            userData.mA_DVIQLY
           );
-          this.callMultiAPI();
+         // this.callMultiAPI();
         }
       });
     } catch (error) {
@@ -99,20 +139,27 @@ export default class HomeScreen extends React.PureComponent {
   };
 
   componentDidMount() {
+    this._bootstrapAsync();
+
     //this._bootstrapAsync();
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
+
       this.setState({ screenheight: height, screenwidth: width });
+
       this.getOrientation();
     });
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
   }
-  componentWillMount() {
-    this._bootstrapAsync();
-  }
-  componentWillUnmount() {
-    this._notificationSubscription && this._notificationSubscription.remove();
-  }
+
+  _handleNotification = notification => {
+    console.log("notification: ", notification);
+    this.setState({ notification: notification });
+    this.props.navigation.navigate("NhanDinhThongBaoScreen");
+  };
   getOrientation = () => {
     if (this.refs.rootView) {
       if (Dimensions.get("window").width < Dimensions.get("window").height) {
@@ -226,61 +273,7 @@ export default class HomeScreen extends React.PureComponent {
   parseJSON(response) {
     return response.json();
   }
-  _registerForPushNotifications(emailfb, passwordfb) {
-    // Send our push token over to our backend so we can receive notifications
-    // You can comment the following line out if you want to stop receiving
-    // a notification every time you open the app. Check out the source
-    // for this function in api/registerForPushNotificationsAsync.js
-    // firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(
-    //     "hathuyjp@gmail.com",
-    //     "Tranvanhanh_79"
-    //   )
-    //   .then(() => {
-    //     console.log("createUserWithEmailAndPassword: ", "ok");
-    //   })
-    //   .catch(error => {
-    //     console.log("createUserWithEmailAndPassword: ", error.message);
-    //   });
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(emailfb, passwordfb)
-      .then(() => {
-        //   console.log("loginfb: ", "success");
-      })
-      .catch(error => {
-        //    console.log(this.state.emailfb, error.message);
-      });
-    var currentUser;
-    var that = this;
-    listener = firebase.auth().onAuthStateChanged(function(user) {
-      // console.log("listener:", listener);
-      // console.log("currentUser:", currentUser);
-      // console.log("user:", user);
-      if (user != null) {
-        currentUser = user;
-        registerForPushNotificationsAsync();
-      }
 
-      listener();
-    });
-    // Watch for incoming notifications
-    this._notificationSubscription = Notifications.addListener(
-      this._handleNotification
-    );
-  }
-  _handleNotification = notification => {
-    this.userIDfirebase = firebase.auth().currentUser.uid;
-    //  console.log("this.userIDfirebase: ", this.userIDfirebase);
-    this.props.navigation.navigate("NhanDinhThongBaoScreen");
-    this.setState({ notification: notification });
-
-    firebase
-      .database()
-      .ref("users/" + this.userIDfirebase + "/notifications")
-      .push(notification.data);
-  };
   render() {
     const width = this.state.screenwidth;
     const options = {
@@ -289,14 +282,7 @@ export default class HomeScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        numericSymbols: [
-          " Nghìn",
-          " Triệu",
-          " Tỉ",
-          " Nghìn tỉ",
-          " Triệu tỉ",
-          " Tỉ tỉ"
-        ]
+        numericSymbols: [" K", " T", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -314,7 +300,7 @@ export default class HomeScreen extends React.PureComponent {
     };
     var conf1 = {
       chart: {
-        type: "line",
+        type: "column",
         zoomType: "xy"
       },
       title: {
@@ -326,18 +312,18 @@ export default class HomeScreen extends React.PureComponent {
         }
       },
       plotOptions: {
-        line: {
+        column: {
           dataLabels: {
             format: "{point.y:,.0f} ",
             enabled: true
-          },
-          colorByPoint: true
+          }
         },
         series: {
           allowPointSelect: true,
           marker: {
             enabled: true
-          }
+          },
+          colorByPoint: true
         }
       },
 
@@ -570,11 +556,11 @@ export default class HomeScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Đo đếm"
+        text: "Số công tơ"
       },
       yAxis: {
         title: {
-          text: "TB"
+          text: "Công tơ"
         }
       },
       plotOptions: {
