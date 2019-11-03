@@ -227,16 +227,8 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
         useUTC: false
       },
       lang: {
-        decimalPoint: ",",
         thousandsSep: ".",
-        numericSymbols: [
-          " Nghìn",
-          " Triệu",
-          " Tỉ",
-          " Nghìn tỉ",
-          " Triệu tỉ",
-          " Tỉ tỉ"
-        ]
+        numericSymbols: [" N", " Tr", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -457,7 +449,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Giá bình quân các đơn vị cấp dưới"
+        text: "Giá bình quân các đơn vị cấp dưới tháng " + this.state.SelectedDate
       },
       yAxis: {
         title: {
@@ -520,7 +512,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
           <Text>Đơn vị:</Text>
           <ModalSelector
             data={listDonViQuanLy}
-            style={{ width: 170, marginTop: -5 }}
+            style={{ width: 150, marginTop: -5 }}
             initValue={this.state.TEN_DVIQLY2}
             onChange={option => {
               this.onChangedDonVi(option);
@@ -530,7 +522,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
           <Text style={{ paddingLeft: 10 }}>Tháng/Năm:</Text>
           <ModalSelector
             data={listThangNam}
-            style={{ width: 100, marginTop: -5 }}
+            style={{ width: 90, marginTop: -5 }}
             initValue={this.state.SelectedDate}
             onChange={option => {
               this.onChangedDate(option);

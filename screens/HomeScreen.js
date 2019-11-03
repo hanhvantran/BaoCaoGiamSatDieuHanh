@@ -130,7 +130,7 @@ export default class HomeScreen extends React.PureComponent {
             userData.username,
             userData.mA_DVIQLY
           );
-         // this.callMultiAPI();
+          this.callMultiAPI();
         }
       });
     } catch (error) {
@@ -273,8 +273,13 @@ export default class HomeScreen extends React.PureComponent {
   parseJSON(response) {
     return response.json();
   }
-
+  numberWithCommas(x) {
+    return Math.numericSymbols(
+      x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    );
+  }
   render() {
+    //var Highcharts = "Highcharts";
     const width = this.state.screenwidth;
     const options = {
       global: {
@@ -282,7 +287,7 @@ export default class HomeScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        numericSymbols: [" K", " T", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
+        numericSymbols: [" N", " Tr", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -314,16 +319,27 @@ export default class HomeScreen extends React.PureComponent {
       plotOptions: {
         column: {
           dataLabels: {
-            format: "{point.y:,.0f} ",
-            enabled: true
+            enabled: true,
+            formatter: function() {
+              /*  if (this.y > 1000000000) {
+                return Highcharts.numberFormat(this.y / 1000000000, 0) + "Tỉ";
+              } else 
+*/
+              if (this.y > 1000000) {
+                return Number(Math.floor(this.y / 1000000)) + "Tr";
+              } else if (this.y > 1000) {
+                return Number(Math.floor(this.y / 1000)) + "N";
+              } else {
+                return this.y;
+              }
+            }
           }
         },
         series: {
           allowPointSelect: true,
           marker: {
             enabled: true
-          },
-          colorByPoint: true
+          }
         }
       },
 
@@ -371,7 +387,17 @@ export default class HomeScreen extends React.PureComponent {
       plotOptions: {
         column: {
           dataLabels: {
-            format: "{point.y:,.0f} ",
+            formatter: function() {
+              if (this.y > 1000000000) {
+                return Number(Math.floor(this.y / 1000000000)) + "Tỉ";
+              } else if (this.y > 1000000) {
+                return Number(Math.floor(this.y / 1000000)) + "Tr";
+              } else if (this.y > 1000) {
+                return Number(Math.floor(this.y / 1000)) + "N";
+              } else {
+                return this.y;
+              }
+            },
             enabled: true
           }
         },
@@ -462,7 +488,7 @@ export default class HomeScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Giá bán"
+        text: "Giá bán bình quân theo tháng"
       },
       yAxis: {
         title: {

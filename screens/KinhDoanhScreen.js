@@ -116,14 +116,14 @@ export default class KinhDoanhScreen extends React.PureComponent {
         page: "TheoThoiGianBanDien"
       },
       {
-        name: "Thương phẩm so với kế hoạch giao",
+        name: "TP so với kế hoạch",
         background: "#efcf02",
         icon: "th-list",
         color: "red",
         page: "ThuongPhamTheoKeHoachGiao"
       },
       {
-        name: "Theo nhóm nghành nghề đặc thù",
+        name: "Theo nghành nghề đặc thù",
         background: "#efcf02",
         icon: "list-alt",
         color: "red",

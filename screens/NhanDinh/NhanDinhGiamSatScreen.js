@@ -32,7 +32,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       USERNAME: "",
       CAP_DVI: "",
       SelectedDonVi: "",
-      SelectedDate: new Date().getFullYear().toString(),
+      SelectedDate:
+        new Date().getMonth() + 1 <= 9
+          ? "0" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear()
+          : new Date().getMonth() + 1 + "/" + new Date().getFullYear(),
       listDonVi: [],
       listDaTaCto: [],
       listDaTaTUTI: [],
@@ -97,9 +100,12 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 5;
-    for (var i = intitYear; i <= year; i++) {
-      arrayData.push({ VALUE: i.toString() });
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
+      for (var j = 1; j <= 12; j++) {
+        var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
+        arrayData.push({ VALUE: x });
+      }
     }
     return arrayData;
   }
@@ -137,8 +143,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
     this.setState({
       spinner: true
     });
+    let Thang = vThangNam.split("/")[0];
+    let Nam = vThangNam.split("/")[1];
     let param1 =
-      "?MaDonVi=" + vMaDonVi + "&THANG=12" + "&NAM=" + vThangNam + "";
+      "?MaDonVi=" + vMaDonVi + "&THANG=" + Thang + "&NAM=" + Nam + "";
 
     const urls = [
       urlBaoCao.sp_HanKdinh_Cto + param1 + "&PLoaibaocao=NAM",
@@ -166,6 +174,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         listDaTaHopDong: data[2],
         listDaTaViPhamSuDungDien: data[3]
       });
+      console.log('listDaTaCto',data[0]);
+      console.log('listDaTaTUTI',data[1]);
+      console.log('listDaTaHopDong',data[2]);
+      console.log('listDaTaViPhamSuDungDien',data[3]);
     });
   };
   checkStatus(response) {
@@ -187,10 +199,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   }
   onChangedDate(itemValue) {
     this.callMultiAPI(itemValue.key, this.state.SelectedDonVi);
-    //this.setState({ SelectedDate: itemValue });
   }
   _card(el) {
-    console.log("el", el);
     var { navigate } = this.props.navigation;
     navigate("NhanDinhThongBaoChiTietScreen", {
       data: el
@@ -214,7 +224,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
     let intVHCongTO = 0;
     let intVHCongTO1Pha = 0;
     let intVHCongTO3Pha = 0;
-    let intQHCongTO = 0;
+    let intQHCongTODenNgay = 0;
     let intQHCongTO1Pha = 0;
     let intQHCongTO3Pha = 0;
     let listCongToQuaHan = [];
@@ -238,19 +248,13 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       }
       intVHCongTO = intVHCongTO1Pha + intVHCongTO3Pha;
 
-      for (let i = 0; i < this.state.listDaTaCto.Series[4].data.length; i++) {
-        intQHCongTO1Pha =
-          intQHCongTO1Pha + this.state.listDaTaCto.Series[4].data[i];
+      for (let i = 0; i < this.state.listDaTaCto.Series[15].data.length; i++) {
+        intQHCongTODenNgay =
+          intQHCongTODenNgay + this.state.listDaTaCto.Series[15].data[i];
       }
-      for (let i = 0; i < this.state.listDaTaCto.Series[5].data.length; i++) {
-        intQHCongTO3Pha =
-          intQHCongTO3Pha + this.state.listDaTaCto.Series[5].data[i];
-      }
-      intQHCongTO = intQHCongTO1Pha + intQHCongTO3Pha;
-      listCongToQuaHan = this.state.listDaTaCto.Series[12].data;
+      listCongToQuaHan = this.state.listDaTaCto.Series[15].data;
       listCongToVanHanh = this.state.listDaTaCto.Series[13].data;
-      listTiLeQuaHan = this.state.listDaTaCto.Series[14].data;
-      console.log("listTiLeQuaHan", listTiLeQuaHan);
+      listTiLeQuaHan = this.state.listDaTaCto.Series[16].data;
     }
     //TU,TI
     let intVHTU = 0;
@@ -277,19 +281,19 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       for (let i = 0; i < this.state.listDaTaTUTI.Series[0].data.length; i++) {
         intVHTI = intVHTI + this.state.listDaTaTUTI.Series[0].data[i];
       }
-      for (let i = 0; i < this.state.listDaTaTUTI.Series[7].data.length; i++) {
-        intQHTU = intQHTU + this.state.listDaTaTUTI.Series[7].data[i];
+      for (let i = 0; i < this.state.listDaTaTUTI.Series[6].data.length; i++) {
+        intQHTU = intQHTU + this.state.listDaTaTUTI.Series[6].data[i];
       }
-      for (let i = 0; i < this.state.listDaTaTUTI.Series[2].data.length; i++) {
-        intQHTI = intQHTI + this.state.listDaTaTUTI.Series[2].data[i];
+      for (let i = 0; i < this.state.listDaTaTUTI.Series[1].data.length; i++) {
+        intQHTI = intQHTI + this.state.listDaTaTUTI.Series[1].data[i];
       }
-      listTUQuaHan = this.state.listDaTaTUTI.Series[7].data;
+      listTUQuaHan = this.state.listDaTaTUTI.Series[6].data;
       listTUVanHanh = this.state.listDaTaTUTI.Series[5].data;
-      listTiLeTUQuaHan = this.state.listDaTaTUTI.Series[21].data;
+      listTiLeTUQuaHan = this.state.listDaTaTUTI.Series[23].data;
 
-      listTIQuaHan = this.state.listDaTaTUTI.Series[2].data;
+      listTIQuaHan = this.state.listDaTaTUTI.Series[1].data;
       listTIVanHanh = this.state.listDaTaTUTI.Series[0].data;
-      listTiLeTIQuaHan = this.state.listDaTaTUTI.Series[20].data;
+      listTiLeTIQuaHan = this.state.listDaTaTUTI.Series[22].data;
     }
     //Hop Dong
     let intHopDong = 0;
@@ -310,42 +314,24 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       //Cong To
       for (
         let i = 0;
-        i < this.state.listDaTaHopDong.Series[0].data.length;
+        i < this.state.listDaTaHopDong.Series[6].data.length;
         i++
       ) {
-        intHopDongSH =
-          intHopDongSH + this.state.listDaTaHopDong.Series[0].data[i];
+        intHopDong = intHopDong + this.state.listDaTaHopDong.Series[6].data[i];
       }
-      for (
-        let i = 0;
-        i < this.state.listDaTaHopDong.Series[1].data.length;
-        i++
-      ) {
-        intHopDongNSH =
-          intHopDongNSH + this.state.listDaTaHopDong.Series[1].data[i];
-      }
-      for (
-        let i = 0;
-        i < this.state.listDaTaHopDong.Series[2].data.length;
-        i++
-      ) {
-        intHopDongQuaHanSH =
-          intHopDongQuaHanSH + this.state.listDaTaHopDong.Series[2].data[i];
-      }
-      for (
-        let i = 0;
-        i < this.state.listDaTaHopDong.Series[3].data.length;
-        i++
-      ) {
-        intHopDongQuaHanNSH =
-          intHopDongQuaHanNSH + this.state.listDaTaHopDong.Series[3].data[i];
-      }
-      intHopDong = intHopDongSH + intHopDongNSH;
-      intHopDongQuaHan = intHopDongQuaHanSH + intHopDongQuaHanNSH;
 
-      listHopDongDenHan = this.state.listDaTaHopDong.Series[7].data;
+      for (
+        let i = 0;
+        i < this.state.listDaTaHopDong.Series[9].data.length;
+        i++
+      ) {
+        intHopDongQuaHan =
+          intHopDongQuaHan + this.state.listDaTaHopDong.Series[9].data[i];
+      }
+
+      listHopDongDenHan = this.state.listDaTaHopDong.Series[9].data;
       listHopDong = this.state.listDaTaHopDong.Series[6].data;
-      listTiLeHopDongQuaHan = this.state.listDaTaHopDong.Series[8].data;
+      listTiLeHopDongQuaHan = this.state.listDaTaHopDong.Series[10].data;
       if (this.state.SelectedDonVi.length < 6) {
         let PCongToQuaHanCaoNhat = "";
         let PCongToQuaHanThapNhat = "";
@@ -400,7 +386,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         let indexTiLeCongToMin = listTiLeQuaHan.indexOf(
           Math.min(...listTiLeQuaHan)
         );
-        PTiLeCongToQuaHanThap =
+        PTiLeCongToQuaHanThapNhat =
           "Công tơ quá hạn thấp nhất(%): " +
           this.state.listDaTaCto.Categories[indexTiLeCongToMin] +
           ", " +
@@ -436,7 +422,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         let indexTiLeTUMin = listTiLeTUQuaHan.indexOf(
           Math.min(...listTiLeTUQuaHan)
         );
-        PTiLeTUQuaHanThap =
+        PTiLeTUQuaHanThapNhat =
           "TU quá hạn thấp nhất(%): " +
           this.state.listDaTaTUTI.Categories[indexTiLeTUMin] +
           ", " +
@@ -472,7 +458,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         let indexTiLeTIMin = listTiLeTIQuaHan.indexOf(
           Math.min(...listTiLeTIQuaHan)
         );
-        PTiLeTIQuaHanThap =
+        PTiLeTIQuaHanThapNhat =
           "TI quá hạn thấp nhất(%): " +
           this.state.listDaTaTUTI.Categories[indexTiLeTIMin] +
           ", " +
@@ -635,22 +621,22 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       //Cong To
       for (
         let i = 0;
-        i < this.state.listDaTaViPhamSuDungDien.Series[11].data.length;
+        i < this.state.listDaTaViPhamSuDungDien.Series[4].data.length;
         i++
       ) {
         intkWh =
-          intkWh + this.state.listDaTaViPhamSuDungDien.Series[11].data[i];
+          intkWh + this.state.listDaTaViPhamSuDungDien.Series[4].data[i];
       }
       for (
         let i = 0;
-        i < this.state.listDaTaViPhamSuDungDien.Series[13].data.length;
+        i < this.state.listDaTaViPhamSuDungDien.Series[6].data.length;
         i++
       ) {
         intTongTien =
-          intTongTien + this.state.listDaTaViPhamSuDungDien.Series[13].data[i];
+          intTongTien + this.state.listDaTaViPhamSuDungDien.Series[6].data[i];
       }
-      listkWh.push(this.state.listDaTaViPhamSuDungDien.Series[11]);
-      listTongTien.push(this.state.listDaTaViPhamSuDungDien.Series[13]);
+      listkWh.push(this.state.listDaTaViPhamSuDungDien.Series[4]);
+      listTongTien.push(this.state.listDaTaViPhamSuDungDien.Series[6]);
     }
     const width = this.state.screenwidth;
     const height = this.state.screenheight - 250;
@@ -662,14 +648,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        numericSymbols: [
-          " Nghìn",
-          " Triệu",
-          " Tỉ",
-          " Nghìn tỉ",
-          " Triệu tỉ",
-          " Tỉ tỉ"
-        ]
+        numericSymbols: [" N", " Tr", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -1086,7 +1065,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
               flex: 1,
               height: width >= 800 ? 120 : 240,
               flexDirection: width >= 800 ? "row" : "column",
-              paddingTop: -60
+              paddingTop: -60,
+              marginBottom:20
             }}
           >
             <View
@@ -1100,7 +1080,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                 <PricingCard
                   color="#4f9deb"
                   title="Công tơ quá hạn "
-                  price={this.numberWithCommas(intQHCongTO)}
+                  price={this.numberWithCommas(intQHCongTODenNgay)}
                   titleStyle={{ fontSize: 12 }}
                   pricingStyle={{ fontSize: 12 }}
                   info={[this.numberWithCommas(intVHCongTO)]}
@@ -1296,17 +1276,17 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           <Text>Đơn vị:</Text>
           <ModalSelector
             data={listDonViQuanLy}
-            style={{ width: 170, marginTop: -5 }}
+            style={{ width: 150, marginTop: -5 }}
             initValue={this.state.TEN_DVIQLY2}
             onChange={option => {
               this.onChangedDonVi(option);
             }}
             //  alert(`${option.label} (${option.key}) nom nom nom`);
           />
-          <Text style={{ paddingLeft: 10 }}>Năm:</Text>
+          <Text style={{ paddingLeft: 10 }}>Tháng/Năm:</Text>
           <ModalSelector
             data={listThangNam}
-            style={{ width: 100, marginTop: -5 }}
+            style={{ width: 90, marginTop: -5 }}
             initValue={this.state.SelectedDate}
             onChange={option => {
               this.onChangedDate(option);
@@ -1324,14 +1304,13 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    marginTop:-18
   },
   filter: {
     height: 60,
     paddingTop: 10,
     paddingLeft: 5,
-    paddingBottom: 10,
     backgroundColor: "#fff",
     flexDirection: "row"
   },
@@ -1343,11 +1322,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10
-  },
-  container: {
-    flex: 1,
-    marginTop: -12,
-    backgroundColor: "#f5f7fa"
   },
   // Content header
   header: {

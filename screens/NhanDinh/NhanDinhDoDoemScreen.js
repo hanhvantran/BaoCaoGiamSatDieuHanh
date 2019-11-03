@@ -32,7 +32,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       USERNAME: "",
       CAP_DVI: "",
       SelectedDonVi: "",
-      SelectedDate: new Date().getFullYear().toString(),
+      SelectedDate:
+        new Date().getMonth() + 1 <= 9
+          ? "0" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear()
+          : new Date().getMonth() + 1 + "/" + new Date().getFullYear(),
       listDonVi: [],
       listDaTaChiNiem: [],
       listDaTaChayHong: [],
@@ -97,9 +100,12 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 5;
-    for (var i = intitYear; i <= year; i++) {
-      arrayData.push({ VALUE: i.toString() });
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
+      for (var j = 1; j <= 12; j++) {
+        var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
+        arrayData.push({ VALUE: x });
+      }
     }
     return arrayData;
   }
@@ -137,9 +143,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
     this.setState({
       spinner: true
     });
+    let Thang = vThangNam.split("/")[0];
+    let Nam = vThangNam.split("/")[1];
     let param1 =
-      "?MaDonVi=" + vMaDonVi + "&THANG=12" + "&NAM=" + vThangNam + "";
-
+      "?MaDonVi=" + vMaDonVi + "&THANG=" + Thang + "&NAM=" + Nam + "";
     const urls = [
       urlBaoCao.SP_KHThieuThongTinChiNiem + param1,
       urlBaoCao.sp_CongToChayHong + param1
@@ -165,6 +172,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         listDaTaChiNiem: data[0],
         listDaTaChayHong: data[1]
       });
+      console.log('listDaTaChiNiem',data[0]);
+      console.log('listDaTaChayHong',data[1]);
     });
   };
   checkStatus(response) {
@@ -287,15 +296,18 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         intCongToMatChayHong =
           intCongToMatChayHong + this.state.listDaTaChayHong.Series[1].data[i];
       }
-
-      for (
-        let i = 0;
-        i < this.state.listDaTaChayHong.Series[2].data.length;
-        i++
-      ) {
-        intTiLeChayHong =
-          intTiLeChayHong + this.state.listDaTaChayHong.Series[2].data[i];
-      }
+      intTiLeChayHong= 
+      intTiLeChayHong = Number(
+        intTongSoCongTo == 0 ? 0.0 : ((intCongToMatChayHong * 100) / intTongSoCongTo).toFixed(2)
+      );
+      // for (
+      //   let i = 0;
+      //   i < this.state.listDaTaChayHong.Series[2].data.length;
+      //   i++
+      // ) {
+      //   intTiLeChayHong =
+      //     intTiLeChayHong + this.state.listDaTaChayHong.Series[2].data[i];
+      // }
       listTongSoCongTo = this.state.listDaTaChayHong.Series[0].data;
       listCongToMatChayHong = this.state.listDaTaChayHong.Series[1].data;
       listTiLeChayHong = this.state.listDaTaChayHong.Series[2].data;
@@ -326,7 +338,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         let indexSoLuongKHMin = listTongSoKhachHang.indexOf(
           Math.min(...listTongSoKhachHang)
         );
-        PDienTietKiemThapNhat =
+        PSoLuongKHThap =
           "Số khách hàng thấp nhất: " +
           this.state.listDaTaChiNiem.Categories[indexSoLuongKHMin] +
           ", " +
@@ -394,7 +406,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           Math.max(...listCongToMatChayHong)
         );
         PSoLuongCongToMCHCaoNhat =
-          "MCH cao nhất: " +
+          "Cháy hỏng cao nhất: " +
           this.state.listDaTaChayHong.Categories[indexCongToMat] +
           ", " +
           this.numberWithCommas(Math.max(...listCongToMatChayHong)) +
@@ -403,7 +415,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           Math.min(...listCongToMatChayHong)
         );
         PSoLuongCongToMCHThapNhat =
-          "MCH thấp nhất: " +
+          "Cháy hỏng thấp nhất: " +
           this.state.listDaTaChayHong.Categories[indexCongToMatMin] +
           ", " +
           this.numberWithCommas(Math.min(...listCongToMatChayHong)) +
@@ -413,7 +425,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           Math.max(...listTiLeChayHong)
         );
         PTiLeCongToMCHCaoNhat =
-          "Tỉ lệ MCH cao nhất(%): " +
+          "Tỉ lệ cháy hỏng cao nhất(%): " +
           this.state.listDaTaChayHong.Categories[indexTiLeMCH] +
           ", " +
           this.numberWithCommasDecimal(Math.max(...listTiLeChayHong)) +
@@ -422,7 +434,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           Math.min(...listTiLeChayHong)
         );
         PTiLeCongToMCHThapNhat =
-          "Tỉ lệ MCH thấp nhất(%): " +
+          "Tỉ lệ cháy hỏng thấp nhất(%): " +
           this.state.listDaTaChayHong.Categories[indexTiLeMCHMin] +
           ", " +
           this.numberWithCommasDecimal(Math.min(...listTiLeChayHong)) +
@@ -515,14 +527,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        numericSymbols: [
-          " Nghìn",
-          " Triệu",
-          " Tỉ",
-          " Nghìn tỉ",
-          " Triệu tỉ",
-          " Tỉ tỉ"
-        ]
+        numericSymbols: [" N", " Tr", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -612,7 +617,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       },
 
       title: {
-        text: "Công tơ mất cháy hỏng"
+        text: "Công tơ cháy hỏng"
       },
       xAxis: {
         categories:
@@ -631,7 +636,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         {
           opposite: true,
           title: {
-            text: "Tỉ lệ công tơ mất cháy hỏng(%)"
+            text: "Tỉ lệ công tơ cháy hỏng(%)"
           }
         }
       ],
@@ -648,7 +653,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
 
       series: [
         {
-          name: "Công tơ mất cháy hỏng",
+          name: "Công tơ cháy hỏng",
           data: listCongToMatChayHong,
           column: {
             dataLabels: {
@@ -669,7 +674,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           }
         },
         {
-          name: "Tỉ lệ công tơ mất cháy hỏng (%)",
+          name: "Tỉ lệ công tơ cháy hỏng (%)",
           data: listTiLeChayHong,
           type: "line",
           yAxis: 1,
@@ -734,13 +739,13 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
             <View style={{ flex: 1 }}>
               <PricingCard
                 color="red"
-                title="Mất, cháy, hỏng "
+                title="Cháy, hỏng "
                 price={this.numberWithCommas(intCongToMatChayHong)}
                 titleStyle={{ fontSize: 10 }}
                 pricingStyle={{ fontSize: 12 }}
                 fontSize="22"
                 // info={["1 User", "Basic Support", "All Core Features"]}
-                info={[this.numberWithCommas(intTongSoCongTo)]}
+                info={["Tỉ lệ " + this.numberWithCommasDecimal(intTiLeChayHong)+"%"]}
                 button={{ title: "", icon: "dashboard" }}
               />
             </View>
@@ -841,17 +846,17 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           <Text>Đơn vị:</Text>
           <ModalSelector
             data={listDonViQuanLy}
-            style={{ width: 170, marginTop: -5 }}
+            style={{ width: 150, marginTop: -5 }}
             initValue={this.state.TEN_DVIQLY2}
             onChange={option => {
               this.onChangedDonVi(option);
             }}
             //  alert(`${option.label} (${option.key}) nom nom nom`);
           />
-          <Text style={{ paddingLeft: 10 }}>Năm:</Text>
+          <Text style={{ paddingLeft: 10 }}>Tháng/Năm:</Text>
           <ModalSelector
             data={listThangNam}
-            style={{ width: 100, marginTop: -5 }}
+            style={{ width: 90, marginTop: -5 }}
             initValue={this.state.SelectedDate}
             onChange={option => {
               this.onChangedDate(option);

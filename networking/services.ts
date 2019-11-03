@@ -51,6 +51,8 @@ const urlBaoCao = {
     sp_HanKdinh_TUTI: IP + "sp_HanKdinh_TUTI",
     sp_HanKdinh_TUTI_B_PC_THop: IP + "sp_HanKdinh_TUTI_B_PC_THop",
     get_NghanhNghe: IP + "get_NghanhNghe",
+    get_NghanhNghe2: IP + "get_NghanhNghe2",
+    get_NghanhNghe3: IP + "get_NghanhNghe3",
     GET_KHangThanhLyNoKhoDoi: IP + "GET_KHangThanhLyNoKhoDoi",
     sp_ThuongPhamTheoNghanhNghe: IP + "sp_ThuongPhamTheoNghanhNghe",
     sp_KetQuaBanCSPK: IP + "sp_KetQuaBanCSPK",

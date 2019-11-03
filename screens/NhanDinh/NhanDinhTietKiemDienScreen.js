@@ -32,7 +32,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       USERNAME: "",
       CAP_DVI: "",
       SelectedDonVi: "",
-      SelectedDate: new Date().getFullYear().toString(),
+      SelectedDate:
+        new Date().getMonth() + 1 <= 9
+          ? "0" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear()
+          : new Date().getMonth() + 1 + "/" + new Date().getFullYear(),
       listDonVi: [],
       listDaTa: [],
       listDate: [],
@@ -93,9 +96,12 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 5;
-    for (var i = intitYear; i <= year; i++) {
-      arrayData.push({ VALUE: i.toString() });
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
+      for (var j = 1; j <= 12; j++) {
+        var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
+        arrayData.push({ VALUE: x });
+      }
     }
     return arrayData;
   }
@@ -133,9 +139,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
     this.setState({
       spinner: true
     });
+    let Thang = vThangNam.split("/")[0];
+    let Nam = vThangNam.split("/")[1];
     let param1 =
-      "?MaDonVi=" + vMaDonVi + "&THANG=12" + "&NAM=" + vThangNam + "";
-
+      "?MaDonVi=" + vMaDonVi + "&THANG=" + Thang + "&NAM=" + Nam + "";
     const urls = [urlBaoCao.SP_DienTietKiem + param1];
     Promise.all(
       urls.map(url =>
@@ -154,6 +161,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         SelectedDate: vThangNam,
         listDaTa: data[0]
       });
+      console.log("listDaTa", data[0]);
     });
   };
   checkStatus(response) {
@@ -454,14 +462,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        numericSymbols: [
-          " Nghìn",
-          " Triệu",
-          " Tỉ",
-          " Nghìn tỉ",
-          " Triệu tỉ",
-          " Tỉ tỉ"
-        ]
+        numericSymbols: [" N", " Tr", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -1006,17 +1007,17 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
           <Text>Đơn vị:</Text>
           <ModalSelector
             data={listDonViQuanLy}
-            style={{ width: 170, marginTop: -5 }}
+            style={{ width: 150, marginTop: -5 }}
             initValue={this.state.TEN_DVIQLY2}
             onChange={option => {
               this.onChangedDonVi(option);
             }}
             //  alert(`${option.label} (${option.key}) nom nom nom`);
           />
-          <Text style={{ paddingLeft: 10 }}>Năm:</Text>
+          <Text style={{ paddingLeft: 10 }}>Tháng/Năm:</Text>
           <ModalSelector
             data={listThangNam}
-            style={{ width: 100, marginTop: -5 }}
+            style={{ width: 90, marginTop: -5 }}
             initValue={this.state.SelectedDate}
             onChange={option => {
               this.onChangedDate(option);

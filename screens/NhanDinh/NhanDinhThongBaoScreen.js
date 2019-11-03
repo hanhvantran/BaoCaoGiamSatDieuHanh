@@ -70,7 +70,6 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
           var { navigate } = this.props.navigation;
           navigate("LoginScreen");
         } else {
-          console.log("userData", userData);
           this.callMultiAPI(userData);
         }
       });
@@ -98,7 +97,6 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
     }
     // Get the token that uniquely identifies this device
     let token = await Notifications.getExpoPushTokenAsync();
-    console.log("token", token);
     this.setState({
       PToKen: token
     });
@@ -115,11 +113,6 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson && responseJson.length > 0) {
-          console.log("1notificationsAvailable", responseJson[0]);
-          console.log(
-            "2notificationsAvailable",
-            JSON.stringify(responseJson[0])
-          );
           this.setState({
             notificationsAvailable: responseJson,
             spinner: false
@@ -142,23 +135,20 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
   }
   _card(el) {
     console.log("el", el);
-    var { navigate } = this.props.navigation;
-    navigate("NhanDinhThongBaoChiTietScreen", {
-      data: el
-    });
-    /*
-    return fetch(
-      urlBaoCao.sp_UpdateDaXem +
-        "?PGuiID=" +
-        ""
-    )
+    let guidid = el.guidid;
+    console.log("guidid", guidid);
+    fetch(urlBaoCao.sp_UpdateDaXem + "?PGuiID=" + guidid + "")
       .then(response => response.json())
       .then(responseJson => {
         console.log("sp_UpdateDaXem:", "OK");
       })
       .catch(error => {
         console.log("sp_UpdateDaXem:", error);
-      });*/
+      });
+    var { navigate } = this.props.navigation;
+    navigate("NhanDinhThongBaoChiTietScreen", {
+      data: el
+    });
   }
   renderRow(rowData, sectionID) {
     return (
@@ -187,15 +177,11 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
   //   );
   // }
   render() {
-    console.log(
-      "this.state.notificationsAvailable",
-      this.state.notificationsAvailable
-    );
-
     let Page1 = [];
     if (
       this.state.notificationsAvailable &&
-      !Array.isArray(this.state.notificationsAvailable)
+      Array.isArray(this.state.notificationsAvailable) &&
+      this.state.notificationsAvailable.length > 0
     ) {
       Page1 = ({ label }) => (
         <View style={styles.chart}>
@@ -208,22 +194,36 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
             {Object.keys(this.state.notificationsAvailable).map((keys, i) => (
               <ListItem
                 key={i}
-                title={this.state.notificationsAvailable[key].title}
+                title={this.state.notificationsAvailable[keys].title}
+                rightTitle={this.state.notificationsAvailable[keys].ngaY_TAO}
                 onPress={this._card.bind(
-                  this.state.notificationsAvailable[key]
+                  this,
+                  this.state.notificationsAvailable[keys]
                 )}
-                subtitle={this.state.notificationsAvailable[key].body}
+                subtitle={this.state.notificationsAvailable[keys].body}
                 leftIcon={{
-                  name: this.state.notificationsAvailable[key].icon,
-                  color: this.state.notificationsAvailable[key].color,
+                  name: this.state.notificationsAvailable[keys].icon,
+                  color: this.state.notificationsAvailable[keys].color,
                   size: 30
+                }}
+                rightIcon={{
+                  name: "fiber-new",
+                  color: this.state.notificationsAvailable[keys].dA_XEM == 0 ? "red":"white",
+                  size:
+                    this.state.notificationsAvailable[keys].dA_XEM == 0 ? 30 : 0
                 }}
                 chevron
                 bottomDivider
                 titleStyle={{
                   color: "black",
                   fontWeight: "bold",
-                  marginBottom: 15
+                  marginBottom: 15,
+                  fontSize: 13
+                }}
+                rightTitleStyle={{
+                  color: "red",
+                  marginBottom: 15,
+                  fontSize: 10
                 }}
                 subtitleStyle={{ color: "black" }}
               />

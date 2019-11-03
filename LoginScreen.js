@@ -27,10 +27,11 @@ interface State {
 }
 
 class LoginScreen extends React.Component<{}, State> {
+  
   passwordInputRef = React.createRef();
   state: State = {
-    email: "hanhspc_gs",
-    password: "1",
+    email: "",
+    password: "",
     emailTouched: false,
     passwordTouched: false,
     spinner: false

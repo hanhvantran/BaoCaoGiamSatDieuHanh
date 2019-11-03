@@ -13,6 +13,14 @@ import ModalSelector from "react-native-modal-selector";
 import urlBaoCao from "../../../networking/services";
 import ChartView from "react-native-highcharts";
 import Spinner from "react-native-loading-spinner-overlay";
+import {
+  Table,
+  TableWrapper,
+  Row,
+  Rows,
+  Col,
+  Cell
+} from "react-native-table-component";
 export default class TyLeTonThatDienNangScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Báo cáo tỷ lệ tổn thất điện năng"
@@ -39,7 +47,8 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
       orientation: "",
       screenheight: Dimensions.get("window").height,
       screenwidth: Dimensions.get("window").width,
-      spinner: false
+      spinner: false,
+      tableHead: ["Điện lực", " Thực hiện", " Kế hoạch", " So sánh"]
     };
   }
   _bootstrapAsync = async () => {
@@ -184,6 +193,8 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
     //this.setState({ SelectedDate: itemValue });
   }
   render() {
+    let tableTitle = ["", "", "", ""];
+    let tableData = [];
     const width = this.state.screenwidth;
     let vChieuRong = width >= 600 ? width / 2 : width;
     let vChieuRong31 = width >= 600 ? (width / 3) * 1 : width;
@@ -204,14 +215,7 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
       },
       lang: {
         thousandsSep: ".",
-        numericSymbols: [
-          " Nghìn",
-          " Triệu",
-          " Tỉ",
-          " Nghìn tỉ",
-          " Triệu tỉ",
-          " Tỉ tỉ"
-        ]
+        numericSymbols: [" N", " Tr", " Tỉ", " 1000Tỉ", " Triệu tỉ", " Tỉ tỉ"]
       }
       // lang: {
       //   decimalPoint: ",",
@@ -227,45 +231,77 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         decimalPoint: ","
       }
     };
+    let listDauNguon = [];
+    let listThuongPham = [];
+    let listTonThat = [];
     let list3 = [];
+    let listTonThatTheoDonVi = [];
+    let listTonThatTheoDonVikWh = [];
     let varLabel3 = [];
     if (
       this.state.listDaTa &&
       !Array.isArray(this.state.listDaTa) &&
       this.state.listDaTa.Series != null
     ) {
-      let arrayHienTai = this.state.listDaTa.Series[0].data;
-      let arrayCungKy = this.state.listDaTa.Series[1].data;
-      let arrayLuyKe = this.state.listDaTa.Series[2].data;
-      let arrayLuyKeCungKy = this.state.listDaTa.Series[3].data;
-
-      let DienNangNhan1 = arrayHienTai[0];
-      let ThuongPham1 = arrayHienTai[1];
-      let TonThat1 = arrayHienTai[2];
-
-      let DienNangNhan2 = arrayCungKy[0];
-      let ThuongPham2 = arrayCungKy[1];
-      let TonThat2 = arrayCungKy[2];
-
-      let DienNangNhan3 = arrayLuyKe[0];
-      let ThuongPham3 = arrayLuyKe[1];
-      let TonThat3 = arrayLuyKe[2];
-
-      let DienNangNhan4 = arrayLuyKeCungKy[0];
-      let ThuongPham4 = arrayLuyKeCungKy[1];
-      let TonThat4 = arrayLuyKeCungKy[2];
-
+      let DauNguon1 = 0,
+        DauNguon2 = 0,
+        DauNguon3 = 0,
+        DauNguon4 = 0;
+      let TonThat1 = 0,
+        TonThat2 = 0,
+        TonThat3 = 0,
+        TonThat4 = 0;
+      let ThuongPham1 = 0,
+        ThuongPham2 = 0,
+        ThuongPham3 = 0,
+        ThuongPham4 = 0;
+      for (let i = 0; i < this.state.listDaTa.Series[0].data.length; i++) {
+        DauNguon1 = DauNguon1 + this.state.listDaTa.Series[0].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[3].data.length; i++) {
+        DauNguon2 = DauNguon2 + this.state.listDaTa.Series[3].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[6].data.length; i++) {
+        DauNguon3 = DauNguon3 + this.state.listDaTa.Series[6].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[9].data.length; i++) {
+        DauNguon4 = DauNguon4 + this.state.listDaTa.Series[9].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[2].data.length; i++) {
+        TonThat1 = TonThat1 + this.state.listDaTa.Series[2].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[5].data.length; i++) {
+        TonThat2 = TonThat2 + this.state.listDaTa.Series[5].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[8].data.length; i++) {
+        TonThat3 = TonThat3 + this.state.listDaTa.Series[8].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[11].data.length; i++) {
+        TonThat4 = TonThat4 + this.state.listDaTa.Series[11].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[1].data.length; i++) {
+        ThuongPham1 = ThuongPham1 + this.state.listDaTa.Series[1].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[4].data.length; i++) {
+        ThuongPham2 = ThuongPham2 + this.state.listDaTa.Series[4].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[7].data.length; i++) {
+        ThuongPham3 = ThuongPham3 + this.state.listDaTa.Series[7].data[i];
+      }
+      for (let i = 0; i < this.state.listDaTa.Series[10].data.length; i++) {
+        ThuongPham4 = ThuongPham4 + this.state.listDaTa.Series[10].data[i];
+      }
       let TileTT1 = Number(
-        ThuongPham1 == 0 ? 0.0 : ((TonThat1 * 100) / ThuongPham1).toFixed(2)
+        DauNguon1 == 0 ? 0.0 : ((TonThat1 * 100) / DauNguon1).toFixed(2)
       );
       let TileTT2 = Number(
-        ThuongPham2 == 0 ? 0.0 : ((TonThat2 * 100) / ThuongPham2).toFixed(2)
+        DauNguon2 == 0 ? 0.0 : ((TonThat2 * 100) / DauNguon2).toFixed(2)
       );
       let TileTT3 = Number(
-        ThuongPham3 == 0 ? 0.0 : ((TonThat3 * 100) / ThuongPham3).toFixed(2)
+        DauNguon3 == 0 ? 0.0 : ((TonThat3 * 100) / DauNguon3).toFixed(2)
       );
       let TileTT4 = Number(
-        ThuongPham4 == 0 ? 0.0 : ((TonThat4 * 100) / ThuongPham4).toFixed(2)
+        DauNguon4 == 0 ? 0.0 : ((TonThat4 * 100) / DauNguon4).toFixed(2)
       );
       list3.push(TileTT1);
       list3.push(TileTT2);
@@ -275,6 +311,50 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
       varLabel3.push("Cùng kỳ");
       varLabel3.push("Luỹ kế");
       varLabel3.push("Luỹ kế cùng kỳ");
+
+      listDauNguon.push(DauNguon1);
+      listDauNguon.push(DauNguon2);
+      listDauNguon.push(DauNguon3);
+      listDauNguon.push(DauNguon4);
+
+      listThuongPham.push(ThuongPham1);
+      listThuongPham.push(ThuongPham2);
+      listThuongPham.push(ThuongPham3);
+      listThuongPham.push(ThuongPham4);
+
+      listTonThat.push(TonThat1);
+      listTonThat.push(TonThat2);
+      listTonThat.push(TonThat3);
+      listTonThat.push(TonThat4);
+
+      listTonThatTheoDonVi.push(this.state.listDaTa.Series[12]);
+      listTonThatTheoDonVi.push(this.state.listDaTa.Series[13]);
+      listTonThatTheoDonVi.push(this.state.listDaTa.Series[14]);
+      listTonThatTheoDonVi.push(this.state.listDaTa.Series[15]);
+
+      listTonThatTheoDonVikWh.push(this.state.listDaTa.Series[0]);
+      listTonThatTheoDonVikWh.push(this.state.listDaTa.Series[1]);
+      listTonThatTheoDonVikWh.push(this.state.listDaTa.Series[2]);
+
+      tableTitle =
+        this.state.listDaTa && !Array.isArray(this.state.listDaTa)
+          ? this.state.listDaTa.Categories
+          : [];
+      for (let i = 0; i < this.state.listDaTa.Series[12].data.length; i++) {
+        const listDataRow = [];
+        let intTTPT = 0,
+          intKeHoach = 0;
+        intTTPT = this.state.listDaTa.Series[12].data[i];
+        intKeHoach = this.state.listDaTa.Series[16].data[i];
+        listDataRow.push(intTTPT);
+        listDataRow.push(intKeHoach);
+        if (intKeHoach <= 0) {
+          listDataRow.push("Chưa nhập kế hoạch");
+        } else {
+          listDataRow.push(Number(intTTPT - intKeHoach).toFixed(2));
+        }
+        tableData.push(listDataRow);
+      }
     }
 
     var conf2 = {
@@ -283,7 +363,7 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Sản lượng"
+        text: "Tổn thất hạ thế"
       },
       yAxis: {
         title: {
@@ -294,15 +374,23 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         enabled: false
       },
       xAxis: {
-        categories:
-          this.state.listDaTa && !Array.isArray(this.state.listDaTa)
-            ? this.state.listDaTa.Categories
-            : []
+        categories: varLabel3
       },
-      series:
-        this.state.listDaTa && !Array.isArray(this.state.listDaTa)
-          ? this.state.listDaTa.Series
-          : [],
+      series: [
+        {
+          name: "Đầu nguồn",
+          data: listDauNguon
+          // yAxis: 1
+        },
+        {
+          name: "Thương phẩm",
+          data: listThuongPham
+        },
+        {
+          name: "Tổn thất",
+          data: listTonThat
+        }
+      ],
       plotOptions: {
         column: {
           dataLabels: {
@@ -327,7 +415,7 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Tổn thất hạ thế"
+        text: "Tỉ lệ tổn thất hạ thế"
       },
       yAxis: {
         title: {
@@ -351,7 +439,8 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
           dataLabels: {
             format: "{point.y:,.2f} ",
             enabled: true
-          }
+          },
+          colorByPoint: true
         }
       },
       responsive: {
@@ -364,7 +453,96 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
         ]
       }
     };
-
+    var conf4 = {
+      chart: {
+        type: "column",
+        zoomType: "xy"
+      },
+      title: {
+        text: "Tổn thất theo đơn vị tháng " + this.state.SelectedDate
+      },
+      yAxis: {
+        title: {
+          text: "kWh"
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        categories:
+          this.state.listDaTa && !Array.isArray(this.state.listDaTa)
+            ? this.state.listDaTa.Categories
+            : []
+      },
+      series: listTonThatTheoDonVikWh,
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.0f} ",
+            enabled: true
+          }
+        }
+      },
+      exporting: {
+        showTable: true
+      },
+      allowDecimals: false,
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500
+            }
+          }
+        ]
+      }
+    };
+    var conf5 = {
+      chart: {
+        type: "column",
+        zoomType: "xy"
+      },
+      title: {
+        text: "Tỉ lệ tổn thất theo đơn vị"
+      },
+      yAxis: {
+        title: {
+          text: "%"
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        categories:
+          this.state.listDaTa && !Array.isArray(this.state.listDaTa)
+            ? this.state.listDaTa.Categories
+            : []
+      },
+      series: listTonThatTheoDonVi,
+      plotOptions: {
+        column: {
+          dataLabels: {
+            format: "{point.y:,.2f} ",
+            enabled: true
+          }
+        }
+      },
+      exporting: {
+        showTable: true
+      },
+      allowDecimals: false,
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500
+            }
+          }
+        ]
+      }
+    };
     let listDonViQuanLy = [];
     {
       this.state.listDonVi.map((item, key) =>
@@ -396,7 +574,7 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
           <Text>Đơn vị:</Text>
           <ModalSelector
             data={listDonViQuanLy}
-            style={{ width: 170, marginTop: -5 }}
+            style={{ width: 150, marginTop: -5 }}
             initValue={this.state.TEN_DVIQLY2}
             onChange={option => {
               this.onChangedDonVi(option);
@@ -406,7 +584,7 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
           <Text style={{ paddingLeft: 10 }}>Tháng/Năm:</Text>
           <ModalSelector
             data={listThangNam}
-            style={{ width: 100, marginTop: -5 }}
+            style={{ width: 90, marginTop: -5 }}
             initValue={this.state.SelectedDate}
             onChange={option => {
               this.onChangedDate(option);
@@ -439,6 +617,49 @@ export default class TyLeTonThatDienNangScreen extends React.PureComponent {
                 domStorageEnabled={true}
               />
             </View>
+            <View style={{ backgroundColor: "orange", height: 1 }} />
+            <ChartView
+              style={{ height: 500 }}
+              config={conf4}
+              options={options2}
+              originWhitelist={[""]}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+            />
+            <View style={{ backgroundColor: "orange", height: 1 }} />
+            <ChartView
+              style={{ height: 500 }}
+              config={conf5}
+              options={options2}
+              originWhitelist={[""]}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+            />
+            <View style={styles.container2}>
+              <View style={{ backgroundColor: "orange", height: 1 }} />
+              <Table borderStyle={{ borderWidth: 1 }}>
+                <Row
+                  data={this.state.tableHead}
+                  flexArr={[2, 1, 1, 1]}
+                  style={styles.head}
+                  textStyle={styles.text}
+                />
+                <TableWrapper style={styles.wrapper}>
+                  <Col
+                    data={tableTitle}
+                    style={styles.title}
+                    heightArr={[28, 28]}
+                    textStyle={styles.text}
+                  />
+                  <Rows
+                    data={tableData}
+                    flexArr={[ 1, 1, 1]}
+                    style={styles.row}
+                    textStyle={styles.text}
+                  />
+                </TableWrapper>
+              </Table>
+            </View>
           </ScrollView>
         </View>
       </View>
@@ -467,5 +688,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10
-  }
+  },
+  container2: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  head: { height: 40, backgroundColor: "#f1f8ff" },
+  wrapper: { flexDirection: "row" },
+  title: { flex: 2, backgroundColor: "#f6f8fa" },
+  row: { height: 28 },
+  text: { textAlign: "center" }
 });
