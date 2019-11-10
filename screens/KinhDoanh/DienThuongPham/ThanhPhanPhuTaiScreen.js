@@ -65,6 +65,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
           });
 
           this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
+          this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
       });
     } catch (error) {
@@ -83,7 +84,6 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
       this.getOrientation();
     });
     this.initListDate();
-    this.callMultiAPI(this.state.SelectedDate, this.state.SelectedDonVi);
   }
   getOrientation = () => {
     if (this.refs.rootView) {

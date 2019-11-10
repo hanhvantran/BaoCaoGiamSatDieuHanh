@@ -94,8 +94,8 @@ export default class CanhBaoCanRaSoatScreen extends React.PureComponent {
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -163,6 +163,7 @@ export default class CanhBaoCanRaSoatScreen extends React.PureComponent {
         SelectedDate: vThangNam,
         listDaTa: data[0]
       });
+     // console.log("listDaTa: ", data[0]);
     });
   };
   checkStatus(response) {

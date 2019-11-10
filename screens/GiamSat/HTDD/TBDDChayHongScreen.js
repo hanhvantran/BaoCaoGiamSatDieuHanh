@@ -621,7 +621,7 @@ export default class TBDDChayHongScreen extends React.PureComponent {
             <View style={{ flex: 1 }}>
               <PricingCard
                 color="red"
-                title="Mất cháy hỏng"
+                title="Cháy hỏng"
                 price={this.numberWithCommas(PMatChayHong)}
                 titleStyle={{ fontSize: 10 }}
                 pricingStyle={{ fontSize: 12 }}

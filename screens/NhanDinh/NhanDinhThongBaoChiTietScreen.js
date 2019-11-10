@@ -35,12 +35,12 @@ export default class NhanDinhThongBaoChiTietScreen extends React.PureComponent {
             <ListItem
               key={i}
               title={list1[keys].content}
-              chevron
+              // chevron
               bottomDivider
               titleStyle={{
                 color: "black",
                 marginBottom: 15,
-                fontSize: 10
+                fontSize: 11
               }}
               subtitleStyle={{ color: "black" }}
             />

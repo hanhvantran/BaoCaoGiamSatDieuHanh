@@ -174,10 +174,10 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         listDaTaHopDong: data[2],
         listDaTaViPhamSuDungDien: data[3]
       });
-      console.log('listDaTaCto',data[0]);
-      console.log('listDaTaTUTI',data[1]);
-      console.log('listDaTaHopDong',data[2]);
-      console.log('listDaTaViPhamSuDungDien',data[3]);
+     // console.log('listDaTaCto',data[0]);
+      //console.log('listDaTaTUTI',data[1]);
+     // console.log('listDaTaHopDong',data[2]);
+     //console.log('listDaTaViPhamSuDungDien',data[3]);
     });
   };
   checkStatus(response) {
@@ -1224,7 +1224,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                       color: list100[keys].color,
                       size: 20
                     }}
-                    chevron
+                    //chevron
                     bottomDivider
                     titleStyle={{
                       color: "black",
@@ -1248,7 +1248,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                       color: list101[keys].color,
                       size: 20
                     }}
-                    chevron
+                    //chevron
                     bottomDivider
                     titleStyle={{
                       color: "black",

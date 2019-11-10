@@ -449,7 +449,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Giá bình quân các đơn vị cấp dưới tháng " + this.state.SelectedDate
+        text: "Giá bình quân các đơn vị cấp dưới luỹ kế " + this.state.SelectedDate
       },
       yAxis: {
         title: {

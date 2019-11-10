@@ -172,8 +172,8 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
         listDaTaChiNiem: data[0],
         listDaTaChayHong: data[1]
       });
-      console.log('listDaTaChiNiem',data[0]);
-      console.log('listDaTaChayHong',data[1]);
+ //     console.log('listDaTaChiNiem',data[0]);
+    //  console.log('listDaTaChayHong',data[1]);
     });
   };
   checkStatus(response) {
@@ -198,7 +198,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
     //this.setState({ SelectedDate: itemValue });
   }
   _card(el) {
-    console.log("el", el);
+  //  console.log("el", el);
     var { navigate } = this.props.navigation;
     navigate("NhanDinhThongBaoChiTietScreen", {
       data: el
@@ -794,7 +794,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                       color: list100[keys].color,
                       size: 20
                     }}
-                    chevron
+                   // chevron
                     bottomDivider
                     titleStyle={{
                       color: "black",
@@ -818,7 +818,7 @@ export default class NhanDinhTramCongCongScreen extends React.PureComponent {
                       color: list101[keys].color,
                       size: 20
                     }}
-                    chevron
+                  //  chevron
                     bottomDivider
                     titleStyle={{
                       color: "black",

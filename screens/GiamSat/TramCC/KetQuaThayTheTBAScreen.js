@@ -836,7 +836,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 10
   },
-  container2: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container2: { flex: 1, padding: 10, backgroundColor: "#fff" },
   head: { height: 40, backgroundColor: "#f1f8ff" },
   wrapper: { flexDirection: "row" },
   title: { flex: 2, backgroundColor: "#f6f8fa" },

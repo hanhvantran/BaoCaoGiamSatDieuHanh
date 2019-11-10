@@ -83,7 +83,7 @@ export default class NhanDinhKinhDoanhScreen extends React.PureComponent {
 
       this.getOrientation();
     });
-    this.initListDate();
+    //this.initListDate();
   }
   getOrientation = () => {
     if (this.refs.rootView) {
@@ -160,8 +160,6 @@ export default class NhanDinhKinhDoanhScreen extends React.PureComponent {
         listDaTaKeHoach: data[0],
         listDaTa: data[1]
       });
-      console.log('listDaTaKeHoach',data[0]);
-      console.log('listDaTa',data[1]);
     });
   };
   checkStatus(response) {
@@ -425,7 +423,7 @@ export default class NhanDinhKinhDoanhScreen extends React.PureComponent {
     PSoTien_HoanThanh = Number(
       PSoTienKH == 0 ? 0 : ((PSoTien * 100) / PSoTienKH).toFixed(2)
     );
-    console.log("PSanLuong_HoanThanh", PSanLuong_HoanThanh);
+   // console.log("PSanLuong_HoanThanh", PSanLuong_HoanThanh);
     const width = this.state.screenwidth;
     const height = this.state.screenheight - 250;
     let vChieuRong = width >= 600 ? (width - 10) / 2 : width;
@@ -931,7 +929,7 @@ export default class NhanDinhKinhDoanhScreen extends React.PureComponent {
                       color: list100[keys].color,
                       size: 20
                     }}
-                    chevron
+                   // chevron
                     bottomDivider
                     titleStyle={{
                       color: "black",
@@ -955,7 +953,7 @@ export default class NhanDinhKinhDoanhScreen extends React.PureComponent {
                       color: list101[keys].color,
                       size: 20
                     }}
-                    chevron
+                  //  chevron
                     bottomDivider
                     titleStyle={{
                       color: "black",

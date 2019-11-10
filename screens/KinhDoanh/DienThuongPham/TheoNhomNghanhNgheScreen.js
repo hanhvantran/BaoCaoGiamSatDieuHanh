@@ -476,13 +476,13 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson && responseJson.length > 0) {
-          console.log("responseJson", responseJson);
+         // console.log("responseJson", responseJson);
           let y = [];
           y = responseJson[0].data;
           this.setState({
             treeData: y
           });
-          console.log("setState", this.state.treeData);
+         // console.log("setState", this.state.treeData);
         } else {
           Alert.alert("Thông báo", "Không có dữ liệu!");
         }

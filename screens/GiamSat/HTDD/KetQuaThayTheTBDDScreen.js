@@ -303,11 +303,7 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
       list16 = this.state.listDaTa.Series[15].data;
       list17 = this.state.listDaTa.Series[16].data;
       list18 = this.state.listDaTa.Series[17].data;
-      //console.log("list1:", list1);
-      //console.log(" this.state.listDaTa.Series:", this.state.listDaTa.Series);
 
-      // console.log("list2:", list2);
-      // console.log("list3:", list3);
     }
     const width = this.state.screenwidth;
     const height = this.state.screenheight - 250;

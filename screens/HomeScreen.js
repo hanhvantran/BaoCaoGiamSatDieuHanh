@@ -156,7 +156,7 @@ export default class HomeScreen extends React.PureComponent {
   }
 
   _handleNotification = notification => {
-    console.log("notification: ", notification);
+    // console.log("notification: ", notification);
     this.setState({ notification: notification });
     this.props.navigation.navigate("NhanDinhThongBaoScreen");
   };

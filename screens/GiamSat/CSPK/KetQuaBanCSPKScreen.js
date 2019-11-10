@@ -20,7 +20,6 @@ export default class KetQuaBanCSPKScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Kết quả bán CSPK"
   };
-  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -54,41 +53,33 @@ export default class KetQuaBanCSPKScreen extends React.PureComponent {
           var { navigate } = this.props.navigation;
           navigate("LoginScreen");
         } else {
-          if (this._isMounted) {
-            this.setState({
-              FULLNAME: userData.fullname,
-              MA_DVICTREN: userData.mA_DVICTREN,
-              MA_DVIQLY: userData.mA_DVIQLY,
-              TEN_DVIQLY: userData.mA_DVIQLY + " - " + userData.teN_DVIQLY,
-              TEN_DVIQLY2: userData.teN_DVIQLY2,
-              USERID: userData.userid,
-              USERNAME: userData.username,
-              CAP_DVI: userData.caP_DVI,
-              SelectedDonVi: userData.mA_DVIQLY,
-              spinner: false
-            });
-            this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
-            this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
-          }
+          this.setState({
+            FULLNAME: userData.fullname,
+            MA_DVICTREN: userData.mA_DVICTREN,
+            MA_DVIQLY: userData.mA_DVIQLY,
+            TEN_DVIQLY: userData.mA_DVIQLY + " - " + userData.teN_DVIQLY,
+            TEN_DVIQLY2: userData.teN_DVIQLY2,
+            USERID: userData.userid,
+            USERNAME: userData.username,
+            CAP_DVI: userData.caP_DVI,
+            SelectedDonVi: userData.mA_DVIQLY,
+            spinner: false
+          });
+          this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
+          this.callMultiAPI(this.state.SelectedDate, userData.mA_DVIQLY);
         }
       });
     } catch (error) {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
+
   componentDidMount() {
-    _isMounted = true;
     this._bootstrapAsync();
     this.getOrientation();
     Dimensions.addEventListener("change", () => {
       const { height, width } = Dimensions.get("window");
-      // this._isMounted &&
-      if (this._isMounted) {
-        this.setState({ screenheight: height, screenwidth: width });
-      }
+      this.setState({ screenheight: height, screenwidth: width });
       this.getOrientation();
     });
     this.initListDate();
@@ -96,21 +87,17 @@ export default class KetQuaBanCSPKScreen extends React.PureComponent {
   getOrientation = () => {
     if (this.refs.rootView) {
       if (Dimensions.get("window").width < Dimensions.get("window").height) {
-        if (this._isMounted) {
-          this.setState({ orientation: "portrait" });
-        }
+        this.setState({ orientation: "portrait" });
       } else {
-        if (this._isMounted) {
-          this.setState({ orientation: "landscape" });
-        }
+        this.setState({ orientation: "landscape" });
       }
     }
   };
   initListDate() {
     var arrayData = [];
     var year = new Date().getFullYear();
-    var intitYear = year - 2;
-    for (var i = intitYear; i <= year; i++) {
+    var intitYear = year;
+    for (var i = intitYear; i > year - 3; i--) {
       for (var j = 1; j <= 12; j++) {
         var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
         arrayData.push({ VALUE: x });
@@ -131,17 +118,15 @@ export default class KetQuaBanCSPKScreen extends React.PureComponent {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson && responseJson.length > 0) {
-          if (this._isMounted) {
-            this.setState(
-              {
-                listDonVi: responseJson,
-                listDate: this.initListDate()
-              },
-              function() {
-                // In this block you can do something with new state.
-              }
-            );
-          }
+          this.setState(
+            {
+              listDonVi: responseJson,
+              listDate: this.initListDate()
+            },
+            function() {
+              // In this block you can do something with new state.
+            }
+          );
         } else {
           this.setState({ spinner: false });
           Alert.alert("Thông báo", "Không có dữ liệu!");
@@ -162,7 +147,7 @@ export default class KetQuaBanCSPKScreen extends React.PureComponent {
       "?MaDonVi=" + vMaDonVi + "&THANG=" + Thang + "&NAM=" + Nam + "";
 
     const urls = [urlBaoCao.sp_KetQuaBanCSPK + param1];
-    //Alert.alert("Loi: " + urls);
+    console.log("url:", urls[0]);
     Promise.all(
       urls.map(url =>
         fetch(url)
@@ -182,7 +167,17 @@ export default class KetQuaBanCSPKScreen extends React.PureComponent {
       });
     });
   };
+  checkStatus(response) {
+    if (response.ok) {
+      return Promise.resolve(response);
+    } else {
+      return Promise.reject(new Error(response.statusText));
+    }
+  }
 
+  parseJSON(response) {
+    return response.json();
+  }
   renderTabBar() {
     return <StatusBar hidden />;
   }

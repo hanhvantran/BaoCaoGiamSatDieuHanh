@@ -134,17 +134,23 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
     this.setState({ selectedIndex });
   }
   _card(el) {
-    console.log("el", el);
+    // console.log("el", el);
     let guidid = el.guidid;
-    console.log("guidid", guidid);
+    // console.log("guidid", guidid);
     fetch(urlBaoCao.sp_UpdateDaXem + "?PGuiID=" + guidid + "")
       .then(response => response.json())
       .then(responseJson => {
-        console.log("sp_UpdateDaXem:", "OK");
+        //  console.log("sp_UpdateDaXem:", "OK");
       })
       .catch(error => {
-        console.log("sp_UpdateDaXem:", error);
+        //  console.log("sp_UpdateDaXem:", error);
       });
+    let number = 0;
+    if (Number.isInteger(Notifications.getBadgeNumberAsync())) {
+      number = Notifications.getBadgeNumberAsync();
+      Notifications.setBadgeNumberAsync(number - 1);
+      console.log("number1:", number);
+    }
     var { navigate } = this.props.navigation;
     navigate("NhanDinhThongBaoChiTietScreen", {
       data: el
@@ -208,7 +214,10 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
                 }}
                 rightIcon={{
                   name: "fiber-new",
-                  color: this.state.notificationsAvailable[keys].dA_XEM == 0 ? "red":"white",
+                  color:
+                    this.state.notificationsAvailable[keys].dA_XEM == 0
+                      ? "red"
+                      : "white",
                   size:
                     this.state.notificationsAvailable[keys].dA_XEM == 0 ? 30 : 0
                 }}

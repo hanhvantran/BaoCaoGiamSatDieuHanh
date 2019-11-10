@@ -146,14 +146,14 @@ export default class GiamSatScreen extends React.PureComponent {
       {
         name: "Kiểm tra HTĐĐ",
         background: "#3498db",
-        icon: "user",
+        icon: "wpforms",
         color: "red",
         page: "KiemTraHTDD"
       },
       {
         name: "Kiểm tra áp giá",
         background: "#ef0202",
-        icon: "edit",
+        icon: "gears",
         color: "red",
         page: "KetQuaKiemTraApGia"
       },
@@ -341,7 +341,7 @@ export default class GiamSatScreen extends React.PureComponent {
             background={Touchable.Ripple("#ccc", false)}
             onPress={this._handlePressLoadPage.bind(this, "KiemTraHTDD")}
           >
-            <View style={{ flexDirection: "row", marginLeft: -100 }}>
+            <View style={{ flexDirection: "row" }}>
               <View style={styles.optionIconContainer}>
                 <Ionicons name="ios-apps" size={22} />
               </View>

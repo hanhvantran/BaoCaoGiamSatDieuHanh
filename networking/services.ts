@@ -1,6 +1,6 @@
-const IP = "http://10.170.0.5/APIGiamSat/api/";
+const IP = "https://khachhang.evnspc.vn/APIGiamSat/api/";
 const urlBaoCao = {
-    IP: "http://10.170.0.5/APIGiamSat/api/",
+    IP: "https://khachhang.evnspc.vn/APIGiamSat/api/",
     getDanhSachDonViQuanLy: IP + "getDanhSachDonViQuanLy",
     SP_KTDangNhap: IP + "SP_KTDangNhap",
     get_Info_Dvi_ChaCon: IP + "get_Info_Dvi_ChaCon",

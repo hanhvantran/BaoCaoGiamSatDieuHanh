@@ -540,7 +540,7 @@ export default class TBDDChuaThayTheScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Tổng số công tơ đang vận hành"
+        text: "Công tơ đang vận hành theo đơn vị"
       },
       yAxis: {
         title: {
@@ -585,7 +585,7 @@ export default class TBDDChuaThayTheScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Công tơ quá hạn"
+        text: "Công tơ quá hạn theo đơn vị"
       },
       yAxis: {
         title: {
