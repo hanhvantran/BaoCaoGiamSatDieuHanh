@@ -100,15 +100,18 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
     this.setState({
       PToKen: token
     });
-    this.callMultiAPI();
+    console.log('PToKen', token);
+    this.callMultiAPI(token);
   }
   componentDidMount() {
-    this._bootstrapAsync();
+    //this._bootstrapAsync();
+    this.registerForPushNotificationsAsync();
   }
   callMultiAPI = UserToken => {
     this.setState({
       spinner: true
     });
+    //console.log('callMultiAPI', UserToken);
     return fetch(urlBaoCao.sp_ThongBao + "?PToken=" + UserToken + "")
       .then(response => response.json())
       .then(responseJson => {

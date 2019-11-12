@@ -325,9 +325,9 @@ export default class HomeScreen extends React.PureComponent {
                 return Highcharts.numberFormat(this.y / 1000000000, 0) + "Tỉ";
               } else 
 */
-              if (this.y > 1000000) {
+              if (Math.abs(this.y) > 1000000) {
                 return Number(Math.floor(this.y / 1000000)) + "Tr";
-              } else if (this.y > 1000) {
+              } else if (Math.abs(this.y) > 1000) {
                 return Number(Math.floor(this.y / 1000)) + "N";
               } else {
                 return this.y;
@@ -388,11 +388,11 @@ export default class HomeScreen extends React.PureComponent {
         column: {
           dataLabels: {
             formatter: function() {
-              if (this.y > 1000000000) {
+              if (Math.abs(this.y) > 1000000000) {
                 return Number(Math.floor(this.y / 1000000000)) + "Tỉ";
-              } else if (this.y > 1000000) {
+              } else if (Math.abs(this.y) > 1000000) {
                 return Number(Math.floor(this.y / 1000000)) + "Tr";
-              } else if (this.y > 1000) {
+              } else if (Math.abs(this.y) > 1000) {
                 return Number(Math.floor(this.y / 1000)) + "N";
               } else {
                 return this.y;
