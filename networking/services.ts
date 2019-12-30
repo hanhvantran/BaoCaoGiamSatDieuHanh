@@ -71,7 +71,10 @@ const urlBaoCao = {
     sp_CongToChayHong: IP + "sp_CongToChayHong",
     SP_KHThieuThongTinChiNiem: IP + "SP_KHThieuThongTinChiNiem",
     sp_ThongBao: IP + "sp_ThongBao",
-    sp_UpdateDaXem: IP + "sp_UpdateDaXem"
+    sp_UpdateDaXem: IP + "sp_UpdateDaXem",
+    sp_KhachHangTheoNghanhNghe: IP + "sp_KhachHangTheoNghanhNghe",
+    sp_BaoCaoDMTMN: IP + "sp_BaoCaoDMTMN",
+    sp_UpdateMatKhau: IP + "sp_UpdateMatKhau"
 
 
 };

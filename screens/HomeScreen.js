@@ -11,11 +11,22 @@ import {
 } from "react-native";
 import urlBaoCao from "../networking/services";
 import ChartView from "react-native-highcharts";
+import ChartMapView from "react-native-highcharts/react-native-highmaps";
+import { PricingCard } from "react-native-elements";
 import ButtonCustom from "../components/ButtonCustom";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import { YellowBox } from "react-native";
+import ModalSelector from "react-native-modal-selector";
+import {
+  Table,
+  TableWrapper,
+  Row,
+  Rows,
+  Col,
+  Cell
+} from "react-native-table-component";
 import _ from "lodash";
 ////"main": "node_modules/expo/AppEntry.js",
 export default class HomeScreen extends React.PureComponent {
@@ -37,10 +48,12 @@ export default class HomeScreen extends React.PureComponent {
       MA_DVICTREN: "",
       MA_DVIQLY: "",
       TEN_DVIQLY: "",
+      TEN_DVIQLY2: "",
       USERID: 0,
       USERNAME: "",
       CAP_DVI: "",
       SelectedDonVi: "",
+      SelectedDate: new Date().getFullYear().toString(),
       orientation: "",
       screenheight: Dimensions.get("window").height,
       screenwidth: Dimensions.get("window").width,
@@ -50,6 +63,9 @@ export default class HomeScreen extends React.PureComponent {
       listGetDoanhThuThucHienTheoThang: [],
       listGetTonThatThangTheoPPMoi: [],
       listGetThuongPhamThucHienTheoThang: [],
+      listGetMTAM: [],
+      listDonVi: [],
+      listDate: [],
       spinner: false,
       emailfb: "",
       passwordfb: "",
@@ -57,7 +73,9 @@ export default class HomeScreen extends React.PureComponent {
       userIDfirebase: "",
       notificationsAvailable: [],
       error: "",
-      lblNoiDung: ""
+      lblNoiDung: "",
+      lblNoiDung2: "",
+      tableHead: ["Tính chất", "Tổng công suất (KWP)", "Tổng điện phát (KWh)"]
     };
   }
   async registerForPushNotificationsAsync(TaiKhoan, DonVi) {
@@ -106,38 +124,104 @@ export default class HomeScreen extends React.PureComponent {
     try {
       AsyncStorage.getItem("UserInfomation").then(user_data_json => {
         let userData = JSON.parse(user_data_json);
-        if (userData == undefined) {
+       // console.log('userData', userData);
+        if (
+          userData == undefined ||
+          userData.ngaY_LOGIN == undefined ||
+          userData.ngaY_LOGIN == null
+        ) {
           var { navigate } = this.props.navigation;
           navigate("LoginScreen");
         } else {
-          let Nam = new Date().getFullYear();
-
-          this.setState({
-            FULLNAME: userData.fullname,
-            MA_DVICTREN: userData.mA_DVICTREN,
-            MA_DVIQLY: userData.mA_DVIQLY,
-            TEN_DVIQLY: userData.mA_DVIQLY + " - " + userData.teN_DVIQLY,
-            USERID: userData.userid,
-            USERNAME: userData.username,
-            CAP_DVI: userData.caP_DVI,
-            SelectedDonVi: userData.mA_DVIQLY,
-            emailfb: userData.email,
-            passwordfb: userData.passwordfb,
-            spinner: false,
-            lblNoiDung: userData.teN_DVIQLY2 + " - BÁO CÁO TỔNG HỢP NĂM " + Nam
-          });
-          this.registerForPushNotificationsAsync(
-            userData.username,
-            userData.mA_DVIQLY
-          );
-          this.callMultiAPI();
+         // console.log('userData.ngaY_LOGIN', userData.ngaY_LOGIN);
+          let ngayLogin = userData.ngaY_LOGIN;
+          let dateLogin = new Date(ngayLogin);
+          dateLogin.setDate(dateLogin.getDate() +2);
+          let dateNow = new Date();
+         // console.log('dateLogin', dateLogin);
+          if (dateNow > dateLogin) 
+          {
+           // console.log('dateNow', dateNow);
+            var { navigate } = this.props.navigation;
+            navigate("LoginScreen");
+          } else {
+           // console.log('ngon','ngon');
+            this.setState({
+              FULLNAME: userData.fullname,
+              MA_DVICTREN: userData.mA_DVICTREN,
+              MA_DVIQLY: userData.mA_DVIQLY,
+              TEN_DVIQLY: userData.mA_DVIQLY + " - " + userData.teN_DVIQLY,
+              TEN_DVIQLY2: userData.teN_DVIQLY2,
+              lblNoiDung: (
+                userData.teN_DVIQLY2 +
+                " - BÁO CÁO TỔNG HỢP NĂM " +
+                this.state.SelectedDate.toString()
+              ).toUpperCase(),
+              lblNoiDung2: userData.teN_DVIQLY2,
+              USERID: userData.userid,
+              USERNAME: userData.username,
+              CAP_DVI: userData.caP_DVI,
+              SelectedDonVi: userData.mA_DVIQLY,
+              emailfb: userData.email,
+              passwordfb: userData.passwordfb,
+              spinner: false
+            });
+            this.registerForPushNotificationsAsync(
+              userData.username,
+              userData.mA_DVIQLY
+            );
+            this.get_Info_Dvi_ChaCon(userData.mA_DVIQLY, userData.caP_DVI);
+            this.callMultiAPI(
+              this.state.SelectedDate,
+              userData.mA_DVIQLY,
+              userData.teN_DVIQLY2
+            );
+          }
         }
       });
     } catch (error) {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
-
+  initListDate() {
+    var arrayData = [];
+    var year = new Date().getFullYear();
+    var intitYear = year;
+    for (var i = intitYear; i > year - 5; i--) {
+      arrayData.push({ VALUE: i.toString() });
+    }
+    return arrayData;
+  }
+  get_Info_Dvi_ChaCon = (Donvi, CapDonVi) => {
+    let capDonVi = Donvi == "PB" ? 0 : CapDonVi == 2 ? 4 : 3;
+    return fetch(
+      urlBaoCao.get_Info_Dvi_ChaCon +
+        "?MaDonVi=" +
+        Donvi +
+        "&CapDonVi=" +
+        capDonVi +
+        ""
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson && responseJson.length > 0) {
+          this.setState(
+            {
+              listDonVi: responseJson,
+              listDate: this.initListDate()
+            },
+            function() {
+              // In this block you can do something with new state.
+            }
+          );
+        } else {
+          Alert.alert("Thông báo", "Không có dữ liệu!");
+        }
+      })
+      .catch(error => {
+        Alert.alert("Lỗi kết nối!", error.toString());
+      });
+  };
   componentDidMount() {
     this._bootstrapAsync();
 
@@ -186,25 +270,26 @@ export default class HomeScreen extends React.PureComponent {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
-  callMultiAPI = async () => {
+  callMultiAPI = async (vThangNam, vMaDonVi, lblTenDonVi) => {
     let vThongBao = [];
     let intNumber = 0;
     this.setState({
       spinner: true
     });
     let Thang = new Date().getMonth() + 1;
-    let Nam = new Date().getFullYear();
-    let NamTruoc = new Date().getFullYear() - 1;
-    let param1 = this.state.MA_DVIQLY + "/1/" + Thang + "/" + Nam;
-    let param2 =
-      this.state.MA_DVIQLY + "/12/" + NamTruoc + "/" + Thang + "/" + Nam;
+    let Nam = vThangNam;
+    let NamTruoc = vThangNam - 1;
+    let param1 = vMaDonVi + "/1/" + Thang + "/" + Nam;
+    let param2 = vMaDonVi + "/12/" + NamTruoc + "/" + Thang + "/" + Nam;
+    let param3 = "?MaDonVi=" + vMaDonVi + "&Nam=" + Nam + "";
     const urls = [
       urlBaoCao.GetSoDoDemTheoThang + param1, //MaDonVi, Thang, Nam
       urlBaoCao.GetHDMBDThucHienTheoThang + param1, //MaDonVi, Thang, Nam
       urlBaoCao.GetGBBQThucHienTheoThang2 + param1, //MaDonVi, Thang, Nam
       urlBaoCao.GetDoanhThuThucHienTheoThang + param1, //MaDonVi, TuThang, DenThang, Nam
       urlBaoCao.GetTonThatThangTheoPPMoi + param2, //MaDonVi, TuNam, DenNam
-      urlBaoCao.GetThuongPhamThucHienTheoThang + param1
+      urlBaoCao.GetThuongPhamThucHienTheoThang + param1,
+      urlBaoCao.sp_BaoCaoDMTMN + param3
     ];
     // use map() to perform a fetch and handle the response for each url
     Promise.all(
@@ -259,7 +344,16 @@ export default class HomeScreen extends React.PureComponent {
         listGetGBBQThucHienTheoThang2: data[2],
         listGetDoanhThuThucHienTheoThang: data[3],
         listGetTonThatThangTheoPPMoi: data[4],
-        listGetThuongPhamThucHienTheoThang: data[5]
+        listGetThuongPhamThucHienTheoThang: data[5],
+        listGetMTAM: data[6],
+        SelectedDonVi: vMaDonVi,
+        SelectedDate: vThangNam,
+        lblNoiDung: (
+          lblTenDonVi +
+          " - BÁO CÁO TỔNG HỢP NĂM " +
+          vThangNam
+        ).toUpperCase(),
+        lblNoiDung2: lblTenDonVi
       });
     });
   };
@@ -270,15 +364,35 @@ export default class HomeScreen extends React.PureComponent {
       return Promise.reject(new Error(response.statusText));
     }
   }
+  onChangedDonVi(itemValue) {
+    let lblTen = itemValue.label;
+    this.callMultiAPI(this.state.SelectedDate, itemValue.key, lblTen);
+  }
+  onChangedDate(itemValue) {
+    this.callMultiAPI(
+      itemValue.key,
+      this.state.SelectedDonVi,
+      this.state.lblNoiDung2
+    );
+    //this.setState({ SelectedDate: itemValue });
+  }
   parseJSON(response) {
     return response.json();
   }
   numberWithCommas(x) {
-    return Math.numericSymbols(
-      x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    );
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  numberWithCommasDecimal(x) {
+    return x.toString().replace(".", ",");
   }
   render() {
+    let tableTitle = [
+      "Khách hàng",
+      "Trụ sở ĐL(Thuộc TCT)",
+      "Trụ sở ĐL(Không thuộc TCT)",
+      "Tổng"
+    ];
+    let tableData = [];
     //var Highcharts = "Highcharts";
     const width = this.state.screenwidth;
     const options = {
@@ -624,7 +738,178 @@ export default class HomeScreen extends React.PureComponent {
         ]
       }
     };
+    let dataMap1 = [];
+    let dataMap2 = [];
+    let varMapData = [];
+    let tongkWh = 0;
+    let tongkWh0 = 0;
+    let tongkWh1 = 0;
+    let tongkWh2 = 0;
 
+    let tongkWP = 0;
+    let tongkWP0 = 0;
+    let tongkWP1 = 0;
+    let tongkWP2 = 0;
+
+    // See API docs for 'joinBy' for more info on linking data and map.
+    if (
+      this.state.listGetMTAM != undefined &&
+      this.state.listGetMTAM.length > 0
+    ) {
+      let listDataRow = [];
+      dataMap1 = JSON.parse(this.state.listGetMTAM[0].data);
+      dataMap2 = JSON.parse(this.state.listGetMTAM[0].congsuat);
+      varMapData = JSON.parse(this.state.listGetMTAM[0].map);
+
+      listDataRow.push(
+        this.state.listGetMTAM[0].congsuattongkhong
+          .toLocaleString()
+          .replace(",", "#")
+          .replace(".", ",")
+          .replace("#", ".")
+      );
+      listDataRow.push(this.numberWithCommas(this.state.listGetMTAM[0].tonG0));
+      tableData.push(listDataRow);
+      listDataRow = [];
+      listDataRow.push(
+        this.state.listGetMTAM[0].congsuattongmot
+          .toLocaleString()
+          .replace(",", "#")
+          .replace(".", ",")
+          .replace("#", ".")
+      );
+      listDataRow.push(this.numberWithCommas(this.state.listGetMTAM[0].tonG1));
+      tableData.push(listDataRow);
+      listDataRow = [];
+      listDataRow.push(
+        this.state.listGetMTAM[0].congsuattonghai
+          .toLocaleString()
+          .replace(",", "#")
+          .replace(".", ",")
+          .replace("#", ".")
+      );
+      listDataRow.push(this.numberWithCommas(this.state.listGetMTAM[0].tonG2));
+      tableData.push(listDataRow);
+      listDataRow = [];
+      listDataRow.push(
+        this.state.listGetMTAM[0].congsuattong
+          .toLocaleString()
+          .replace(",", "#")
+          .replace(".", ",")
+          .replace("#", ".")
+      );
+      listDataRow.push(this.numberWithCommas(this.state.listGetMTAM[0].tong));
+      tableData.push(listDataRow);
+    }
+    let PNam = this.state.SelectedDate.toString();
+    const confMap1 = {
+      chart: {
+        map: varMapData
+      },
+      title: {
+        text: "Sản lượng phát lũy kế năm " + this.state.SelectedDate
+      },
+      mapNavigation: {
+        enabled: true,
+        buttonOptions: {
+          verticalAlign: "bottom"
+        }
+      },
+
+      tooltip: {
+        enabled: true
+      },
+
+      colorAxis: {
+        min: 0,
+        minColor: "#E6E7E8",
+        maxColor: "#DF0101"
+      },
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          data: dataMap1,
+          name: "Điện phát",
+          joinBy: "hc_key",
+          states: {
+            hover: {
+              color: "#BADA55"
+            }
+          },
+          dataLabels: {
+            enabled: true,
+            format: "{point.name}"
+          }
+        }
+      ]
+    };
+    const confMap2 = {
+      chart: {
+        map: varMapData
+      },
+      title: {
+        text: "Công suất lắp đặt(KWP)"
+      },
+      mapNavigation: {
+        enabled: true,
+        buttonOptions: {
+          verticalAlign: "bottom"
+        }
+      },
+
+      tooltip: {
+        enabled: true
+      },
+
+      colorAxis: {
+        min: 0,
+        minColor: "#E6E7E8",
+        maxColor: "#DF0101"
+      },
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          data: dataMap2,
+          name: "CS lắp đặt",
+          joinBy: "hc_key",
+          states: {
+            hover: {
+              color: "#BADA55"
+            }
+          },
+          dataLabels: {
+            enabled: true,
+            format: "{point.name}"
+          }
+        }
+      ]
+    };
+    let listDonViQuanLy = [];
+    {
+      this.state.listDonVi.map((item, key) =>
+        listDonViQuanLy.push({
+          key: item.mA_DVIQLY,
+          label: item.teN_DVIQLY,
+          value: item.mA_DVIQLY
+        })
+      );
+    }
+    let listThangNam = [];
+    {
+      this.state.listDate.map((item, key) =>
+        listThangNam.push({
+          key: item.VALUE,
+          label: item.VALUE,
+          value: item.VALUE
+        })
+      );
+    }
     return (
       <View style={{ flex: 1 }}>
         <Text
@@ -704,12 +989,83 @@ export default class HomeScreen extends React.PureComponent {
               javaScriptEnabled={true}
               domStorageEnabled={true}
             />
+            <View style={{ backgroundColor: "orange", height: 1 }} />
+            <View style={styles.container2}>
+              <Table borderStyle={{ borderWidth: 1 }}>
+                <Row
+                  data={["TÌNH HÌNH PHÁT TRIỂN ĐMTMN EVNSPC"]}
+                  flexArr={[3]}
+                  style={styles.head}
+                  textStyle={styles.text}
+                />
+                <Row
+                  data={this.state.tableHead}
+                  flexArr={[2, 1, 1]}
+                  style={styles.head}
+                  textStyle={styles.text}
+                />
+                <TableWrapper style={styles.wrapper}>
+                  <Col
+                    data={tableTitle}
+                    style={styles.title}
+                    heightArr={[28, 28]}
+                    textStyle={styles.text}
+                  />
+                  <Rows
+                    data={tableData}
+                    flexArr={[1, 1]}
+                    style={styles.row}
+                    textStyle={styles.text}
+                  />
+                </TableWrapper>
+              </Table>
+            </View>
+            <ChartMapView
+              style={{ height: 400 }}
+              config={confMap1}
+              mapChart={true}
+              //  title={"Tình hình phát triển ĐMTMN EVNPSC "}
+              options={options}
+              //data={dataMap}
+              originWhitelist={[""]}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+            ></ChartMapView>
+            <View style={{ backgroundColor: "orange", height: 1 }} />
+            <ChartMapView
+              style={{ height: 400 }}
+              config={confMap2}
+              mapChart={true}
+              //  title={"Tình hình phát triển ĐMTMN EVNPSC "}
+              options={options2}
+              //data={dataMap}
+              originWhitelist={[""]}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+            ></ChartMapView>
           </View>
           <View style={{ height: 1, backgroundColor: "orange" }} />
           <View style={styles.chart}>
             {/* <Card title="CARD WITH DIVIDER"> */}
             {/* </Card> */}
-            <ButtonCustom label="Lấy dữ liệu" onPress={this.callMultiAPI} />
+            <ModalSelector
+              data={listDonViQuanLy}
+              initValue={this.state.TEN_DVIQLY2}
+              onChange={option => {
+                this.onChangedDonVi(option);
+              }}
+              //  alert(`${option.label} (${option.key}) nom nom nom`);
+            />
+            <ModalSelector
+              style={{ marginTop: 10 }}
+              data={listThangNam}
+              initValue={this.state.SelectedDate}
+              onChange={option => {
+                this.onChangedDate(option);
+              }}
+              //  alert(`${option.label} (${option.key}) nom nom nom`);
+            />
+            {/* <ButtonCustom label="Lấy dữ liệu" onPress={this.callMultiAPI} /> */}
           </View>
         </ScrollView>
       </View>
@@ -725,10 +1081,23 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingLeft: 5,
+    paddingRight: 5,
     paddingBottom: 10,
     backgroundColor: "white"
   },
   spinnerTextStyle: {
     color: "brown"
-  }
+  },
+
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
+  },
+  container2: { flex: 1, padding: 10, backgroundColor: "#fff" },
+  head: { height: 40, backgroundColor: "#f1f8ff" },
+  wrapper: { flexDirection: "row" },
+  title: { flex: 2, backgroundColor: "#f6f8fa" },
+  row: { height: 28 },
+  text: { textAlign: "center" }
 });

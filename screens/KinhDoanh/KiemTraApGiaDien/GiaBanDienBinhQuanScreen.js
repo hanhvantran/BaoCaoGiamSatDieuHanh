@@ -235,6 +235,15 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
       //   thousandsSep: "."
       // },
     };
+    const options2 = {
+      global: {
+        useUTC: false
+      },
+      lang: {
+        thousandsSep: ".",
+        decimalPoint: ","
+      }
+    };
     var conf1 = {
       chart: {
         type: "column",
@@ -541,7 +550,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
               <ChartView
                 style={{ height: 500, width: vChieuRong }}
                 config={conf1}
-                options={options}
+                options={options2}
                 originWhitelist={[""]}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
@@ -549,7 +558,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
               <ChartView
                 style={{ height: 500, width: vChieuRong }}
                 config={conf2}
-                options={options}
+                options={options2}
                 originWhitelist={[""]}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
@@ -560,7 +569,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
               <ChartView
                 style={{ height: 500, width: vChieuRong32 }}
                 config={conf3}
-                options={options}
+                options={options2}
                 originWhitelist={[""]}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
@@ -568,7 +577,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
               <ChartView
                 style={{ height: 500, width: vChieuRong31 }}
                 config={conf4}
-                options={options}
+                options={options2}
                 originWhitelist={[""]}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
@@ -579,7 +588,7 @@ export default class ThanhPhanPhuTaiScreen extends React.PureComponent {
               <ChartView
                 style={{ height: 500 }}
                 config={conf5}
-                options={options}
+                options={options2}
                 originWhitelist={[""]}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}

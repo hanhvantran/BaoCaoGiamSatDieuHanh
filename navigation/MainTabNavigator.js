@@ -24,6 +24,7 @@ import GiaBanDienBinhQuanScreen from "../screens/KinhDoanh/KiemTraApGiaDien/GiaB
 import KhachHangKhaiThacBaGiaScreen from "../screens/KinhDoanh/KiemTraApGiaDien/KhachHangKhaiThacBaGiaScreen";
 import KhachHangThuocDoiTuongGSScreen from "../screens/KinhDoanh/KiemTraApGiaDien/KhachHangThuocDoiTuongGSScreen";
 import KHKhaiThacBaGiaTheoNNScreen from "../screens/KinhDoanh/KiemTraApGiaDien/KHKhaiThacBaGiaTheoNNScreen";
+import KhachHangNghanhNgheScreen from "../screens/KinhDoanh/KiemTraApGiaDien/KhachHangNghanhNgheScreen";
 
 //ThuTienDien
 import KhachHangCatDienScreen from "../screens/KinhDoanh/ThuTienDien/KhachHangCatDienScreen";
@@ -113,6 +114,7 @@ const KinhDoanhStack = createStackNavigator({
   KhachHangKhaiThacBaGia: KhachHangKhaiThacBaGiaScreen,
   KhachHangThuocDoiTuongGS: KhachHangThuocDoiTuongGSScreen,
   KHKhaiThacBaGiaTheoNN: KHKhaiThacBaGiaTheoNNScreen,
+  KhachHangNghanhNghe: KhachHangNghanhNgheScreen,
   //ThuTienDien
   KhachHangCatDien: KhachHangCatDienScreen,
   KhachHangNoTienDien: KhachHangNoTienDienScreen,

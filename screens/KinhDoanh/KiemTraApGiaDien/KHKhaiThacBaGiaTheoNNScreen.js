@@ -426,6 +426,7 @@ export default class KHKhaiThacBaGiaTheoNNScreen extends React.PureComponent {
         ]
       }
     };
+  
     let listDonViQuanLy = [];
     {
       this.state.listDonVi.map((item, key) =>

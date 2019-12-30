@@ -48,7 +48,7 @@ const list1 = [
 ];
 export default class NhanDinhThongBaoScreen extends React.PureComponent {
   static navigationOptions = {
-    title: "Thông báo"
+    title: "Cảnh báo"
   };
   constructor() {
     super();
@@ -100,7 +100,7 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
     this.setState({
       PToKen: token
     });
-    console.log('PToKen', token);
+    console.log("PToKen", token);
     this.callMultiAPI(token);
   }
   componentDidMount() {
@@ -111,7 +111,7 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
     this.setState({
       spinner: true
     });
-    //console.log('callMultiAPI', UserToken);
+    console.log('callMultiAPI', UserToken);
     return fetch(urlBaoCao.sp_ThongBao + "?PToken=" + UserToken + "")
       .then(response => response.json())
       .then(responseJson => {
@@ -120,6 +120,7 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
             notificationsAvailable: responseJson,
             spinner: false
           });
+        //  console.log('responseJson', responseJson);
         } else {
           this.setState({
             spinner: false
@@ -136,7 +137,7 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
   updateIndex(selectedIndex) {
     this.setState({ selectedIndex });
   }
-  _card(el) {
+  _viewDetail(el) {
     // console.log("el", el);
     let guidid = el.guidid;
     // console.log("guidid", guidid);
@@ -163,7 +164,7 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
     return (
       <ListItem
         key={sectionID}
-        onPress={this._card.bind(this, rowData)}
+        onPress={this._viewDetail.bind(this, rowData)}
         title={rowData.body}
         subtitle={rowData.subtitle}
         leftIcon={{ name: rowData.icon, color: rowData.color, size: 50 }}
@@ -205,7 +206,7 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
                 key={i}
                 title={this.state.notificationsAvailable[keys].title}
                 rightTitle={this.state.notificationsAvailable[keys].ngaY_TAO}
-                onPress={this._card.bind(
+                onPress={this._viewDetail.bind(
                   this,
                   this.state.notificationsAvailable[keys]
                 )}
@@ -260,7 +261,8 @@ export default class NhanDinhThongBaoScreen extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    paddingTop:15
   },
   list: {
     // marginTop: 20,

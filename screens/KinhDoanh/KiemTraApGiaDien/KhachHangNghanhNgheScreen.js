@@ -337,9 +337,9 @@ const renderLabel = (label, style) => {
     </View>
   );
 };
-export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
+export default class KhachHangNghanhNgheScreen extends React.PureComponent {
   static navigationOptions = {
-    title: "Theo nhóm nghành nghề đặc thù"
+    title: "Khách hàng theo nghành nghề đặc thù"
   };
 
   constructor(props) {
@@ -354,14 +354,9 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
       USERNAME: "",
       CAP_DVI: "",
       SelectedDonVi: "",
-      SelectedDate:
-        new Date().getMonth() + 1 <= 9
-          ? "0" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear()
-          : new Date().getMonth() + 1 + "/" + new Date().getFullYear(),
       listDonVi: [],
       listNghanhNghe: [],
       listDaTa: [],
-      listDate: [],
       orientation: "",
       screenheight: Dimensions.get("window").height,
       screenwidth: Dimensions.get("window").width,
@@ -417,7 +412,6 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
 
       this.getOrientation();
     });
-    this.initListDate();
   }
   getOrientation = () => {
     if (this.refs.rootView) {
@@ -428,18 +422,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
       }
     }
   };
-  initListDate() {
-    var arrayData = [];
-    var year = new Date().getFullYear();
-    var intitYear = year;
-    for (var i = intitYear; i > year - 3; i--) {
-      for (var j = 1; j <= 12; j++) {
-        var x = j <= 9 ? "0" + j + "/" + i : j + "/" + i;
-        arrayData.push({ VALUE: x });
-      }
-    }
-    return arrayData;
-  }
+
   get_Info_Dvi_ChaCon = (Donvi, CapDonVi) => {
     let capDonVi = Donvi == "PB" ? 0 : CapDonVi == 2 ? 4 : 3;
     return fetch(
@@ -455,8 +438,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         if (responseJson && responseJson.length > 0) {
           this.setState(
             {
-              listDonVi: responseJson,
-              listDate: this.initListDate()
+              listDonVi: responseJson
             },
             function() {
               // In this block you can do something with new state.
@@ -491,7 +473,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         Alert.alert("Lỗi kết nối!", error.toString());
       });
   };
-  get_NghanhNghe_OLD = async () => {
+  get_NghanhNghe_old = async () => {
     const urls = [urlBaoCao.get_NghanhNghe2];
     Promise.all(
       urls.map(url =>
@@ -510,7 +492,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
     });
   };
 
-  callMultiAPI = async (vValue, vThangNam, vMaDonVi) => {
+  callMultiAPI = async (vValue, vMaDonVi) => {
     this.setState({
       spinner: true
     });
@@ -524,20 +506,13 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         }
       }
     }
-    let Thang = vThangNam.split("/")[0];
-    let Nam = vThangNam.split("/")[1];
     let param1 =
       "?MaDonVi=" +
       vMaDonVi +
-      "&THANG=" +
-      Thang +
-      "&NAM=" +
-      Nam +
-      "" +
       "&PListNghanhNghe=" +
       vList;
 
-    const urls = [urlBaoCao.sp_ThuongPhamTheoNghanhNghe + param1];
+    const urls = [urlBaoCao.sp_KhachHangTheoNghanhNghe + param1];
     Promise.all(
       urls.map(url =>
         fetch(url)
@@ -552,7 +527,6 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
       this.setState({
         spinner: false,
         SelectedDonVi: vMaDonVi,
-        SelectedDate: vThangNam,
         value: vValue,
         listDaTa: data[0]
       });
@@ -578,19 +552,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
     } else {
       this.callMultiAPI(
         this.state.value,
-        this.state.SelectedDate,
         itemValue.key
-      );
-    }
-  }
-  onChangedDate(itemValue) {
-    if (this.state.value.length == 0) {
-      Alert.alert("Chọn ít nhất 1 mã nghành nghề!", "Thông báo");
-    } else {
-      this.callMultiAPI(
-        this.state.value,
-        itemValue.key,
-        this.state.SelectedDonVi
       );
     }
   }
@@ -600,7 +562,6 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
     } else {
       this.callMultiAPI(
         itemValue,
-        this.state.SelectedDate,
         this.state.SelectedDonVi
       );
     }
@@ -610,15 +571,6 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
     const width = this.state.screenwidth;
     const intFlex = parseInt(width / 180) - 1;
     const height = this.state.screenheight - 50;
-    let Thang = this.state.SelectedDate.split("/")[0];
-    let Nam = this.state.SelectedDate.split("/")[1];
-    let ThangTruoc = Thang - 1;
-    let NamTruoc = Nam;
-    if (Thang == 1) {
-      ThangTruoc = 12;
-      NamTruoc = Nam - 1;
-    }
-    let ThangNamTruoc = ThangTruoc + "/" + NamTruoc;
     let varCategories1 = [];
     let list1 = [];
     if (
@@ -664,11 +616,11 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Tổng thương phẩm theo nghành nghề đặc thù"
+        text: "Tổng số khách hàng theo nghành nghề đặc thù"
       },
       yAxis: {
         title: {
-          text: "kWh"
+          text: "Khách hàng"
         }
       },
       credits: {
@@ -679,7 +631,7 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
       },
       series: [
         {
-          name: "Tháng " + this.state.SelectedDate,
+          name: "Tổng",
           data: list1
         }
       ],
@@ -707,11 +659,11 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Thương phẩm theo nghành nghề đặc thù"
+        text: "Khách hàng theo nghành nghề đặc thù"
       },
       yAxis: {
         title: {
-          text: "kWh"
+          text: "Khách hàng"
         }
       },
       credits: {
@@ -755,16 +707,6 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
         })
       );
     }
-    let listThangNam = [];
-    {
-      this.state.listDate.map((item, key) =>
-        listThangNam.push({
-          key: item.VALUE,
-          label: item.VALUE,
-          value: item.VALUE
-        })
-      );
-    }
     let listNghanhNghe = [];
     {
       this.state.listNghanhNghe.map((item, key) =>
@@ -794,20 +736,12 @@ export default class TheoNhomNghanhNgheScreen extends React.PureComponent {
             //  alert(`${option.label} (${option.key}) nom nom nom`);
           />
           {/* <Text style={{ paddingLeft: 10 }}>Tháng/Năm:</Text> */}
-          <ModalSelector
-            data={listThangNam}
-            style={{ width: 90, marginTop: -5, paddingLeft: 5 }}
-            initValue={this.state.SelectedDate}
-            onChange={option => {
-              this.onChangedDate(option);
-            }}
-          ></ModalSelector>
           <View style={styles.container2}>
             <Button
               onPress={() => {
                 this.treeSelectRef.open();
               }}
-              title="Nghành nghề"
+              title="Chọn nghành nghề"
             />
             <TreeSelect
               ref={node => (this.treeSelectRef = node)}

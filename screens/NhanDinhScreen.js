@@ -87,7 +87,7 @@ export default class NhanDinhScreen extends React.PureComponent {
         page: "NhanDinhDoDoemScreen"
       },
       {
-        name: "Thông Báo",
+        name: "Cảnh báo",
         background: "#efcf02",
         icon: "bell",
         color: "red",

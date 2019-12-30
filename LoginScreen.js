@@ -76,12 +76,18 @@ class LoginScreen extends React.Component<{}, State> {
         this.setState({
           spinner: false
         });
-        if (responseJson && responseJson.length > 0) {
+        if (responseJson && responseJson.length > 0) 
+        {
           //console.log("Thông báo12", responseJson[0].username);
+         // let today = new Date().toLocaleDateString()
+        //  let date = new Date();
+         // date.setDate(date.getDate() + 3);
+
           AsyncStorage.setItem(
             "UserInfomation",
             JSON.stringify(responseJson[0])
           );
+        //  AsyncStorage.setItem('timeLogin', date);
           var { navigate } = this.props.navigation;
           navigate("Main");
         } else {

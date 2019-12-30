@@ -1,16 +1,42 @@
 import _ from "lodash";
 
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Dimensions } from "react-native";
 import { ListItem } from "../ListItem";
 export default class NhanDinhThongBaoChiTietScreen extends React.PureComponent {
   static navigationOptions = {
-    title: "Thông báo  chi tiết"
+    title: "Cảnh báo chi tiết"
   };
   constructor() {
     super();
+    this.state = {
+      orientation: "",
+      screenheight: Dimensions.get("window").height,
+      screenwidth: Dimensions.get("window").width,
+      spinner: false
+    };
   }
+  componentDidMount() {
+    this.getOrientation();
+    Dimensions.addEventListener("change", () => {
+      const { height, width } = Dimensions.get("window");
+
+      this.setState({ screenheight: height, screenwidth: width });
+
+      this.getOrientation();
+    });
+  }
+  getOrientation = () => {
+    if (this.refs.rootView) {
+      if (Dimensions.get("window").width < Dimensions.get("window").height) {
+        this.setState({ orientation: "portrait" });
+      } else {
+        this.setState({ orientation: "landscape" });
+      }
+    }
+  };
   render() {
+    const width = this.state.screenwidth;
     const { navigation } = this.props;
     const receive = navigation.getParam("data", "No data found!");
     let list1 = [];
@@ -40,7 +66,8 @@ export default class NhanDinhThongBaoChiTietScreen extends React.PureComponent {
               titleStyle={{
                 color: "black",
                 marginBottom: 15,
-                fontSize: 11
+                fontSize:
+                  width < 500 ? 10 : width < 800 ? 14 : width < 1200 ? 18 : 20
               }}
               subtitleStyle={{ color: "black" }}
             />
@@ -59,7 +86,8 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     borderTopWidth: 1,
     borderColor: "gray",
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    paddingTop: 15
   },
   headerContainer: {
     justifyContent: "center",

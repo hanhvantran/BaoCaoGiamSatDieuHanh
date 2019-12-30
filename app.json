@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Báo cáo giám sát EVNSPC",
+    "name": "EVNSPC-BMIS",
     "slug": "BaoCaoGiamSatDieuHanh",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "./assets/images/icon.png",
     "notification": {
       "icon": "./assets/images/icon.png",
@@ -29,11 +29,11 @@
     "ios": {
 	  "supportsTablet": true,
       "bundleIdentifier": "com.SPCIT.CNPM.BaoCaoGiamSatDieuHanh",
-      "buildNumber": "3"
+      "buildNumber": "8"
     },
     "android": {
       "package": "com.SPCIT.CNPM.BaoCaoGiamSatDieuHanh",
-      "versionCode": 6
+      "versionCode": 12
     }
   }
 }

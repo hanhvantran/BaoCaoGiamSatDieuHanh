@@ -140,7 +140,7 @@ export default class KinhDoanhScreen extends React.PureComponent {
         page: "SoVoiKeHoach"
       },
       {
-        name: "Khách hàng thanh lý nợ khó đòi",
+        name: "KH thanh lý nợ khó đòi",
         background: "#efcf02",
         icon: "th-list",
         color: "red",
@@ -167,15 +167,25 @@ export default class KinhDoanhScreen extends React.PureComponent {
         page: "KhachHangThuocDoiTuongGS"
       },
       {
-        name: "KH khai thác 3 giá theo nhóm NN",
+        name: "KH khai thác 3 giá theo NN",
         background: "#ef0202",
         icon: "sitemap",
         color: "red",
         page: "KHKhaiThacBaGiaTheoNN"
       }
+      ,
+      {
+        name: "KH theo nhóm NN",
+        background: "#ef0202",
+        icon: "th-list",
+        color: "red",
+        page: "KhachHangNghanhNghe"
+      }
+      
     ];
-    if (varColum == 2)
+    if (varColum == 3)
       items3.push(
+        "{ name: '', background: '#efcf02', icon: 'unlock', color: 'red' }",
         "{ name: '', background: '#efcf02', icon: 'unlock', color: 'red' }"
       );
     let vDisplay1;
@@ -351,7 +361,7 @@ export default class KinhDoanhScreen extends React.PureComponent {
               </View>
               <View style={styles.optionTextContainer}>
                 <Text style={styles.optionText}>
-                  Khách hàng thanh lý nợ khó đòi
+                  KH thanh lý nợ khó đòi
                 </Text>
               </View>
             </View>
@@ -473,7 +483,26 @@ export default class KinhDoanhScreen extends React.PureComponent {
               </View>
               <View style={styles.optionTextContainer}>
                 <Text style={styles.optionText}>
-                  KH khai thác 3 giá theo nhóm NN
+                  KH khai thác 3 giá theo NN
+                </Text>
+              </View>
+            </View>
+          </Touchable>
+          <Touchable
+            style={styles.option}
+            background={Touchable.Ripple("#ccc", false)}
+            onPress={this._handlePressLoadPage.bind(
+              this,
+              "KhachHangNghanhNghe"
+            )}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View style={styles.optionIconContainer}>
+                <Ionicons name="md-cube" size={22} color="red" />
+              </View>
+              <View style={styles.optionTextContainer}>
+                <Text style={styles.optionText}>
+                  KH theo nhóm NN
                 </Text>
               </View>
             </View>

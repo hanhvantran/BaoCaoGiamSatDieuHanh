@@ -411,6 +411,7 @@ export default class KetQuaThayTheTBDDScreen extends React.PureComponent {
       listDataRowTong.push(inttong);
       listDataRowTong.push(dTonThat);
       listDataRowTong.push(dTonThatLuyKe);
+      tableData.push(listDataRowTong);
 
       listtableTitle.push("Tổng");
       tableTitle = listtableTitle;

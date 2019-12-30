@@ -6,11 +6,22 @@ import {
   Text,
   View,
   AsyncStorage,
-  Alert
+  Alert,
+  StatusBar,
+  KeyboardAvoidingView,
+  Modal
 } from "react-native";
 import Constants from "expo-constants";
 import { Button, Icon } from "react-native-elements";
 import ButtonCustom from "../components/ButtonCustom";
+// import Modal from "react-native-modal";
+import FormTextInputCustom from "../components/FormTextInputCustom";
+import imageLogo from "../assets/images/login.png";
+import colors from "../config/colors";
+import strings from "../config/strings";
+import constants from "../config/constants";
+import urlBaoCao from "../networking/services";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default class SettingsScreen extends React.PureComponent {
   static navigationOptions = {
@@ -27,7 +38,13 @@ export default class SettingsScreen extends React.PureComponent {
       USERID: 0,
       USERNAME: "",
       CAP_DVI: "",
-      changedPage: null
+      changedPage: null,
+      email: "",
+      password: "",
+      emailTouched: false,
+      passwordTouched: false,
+      spinner: false,
+      isVisible: false
     };
   }
   componentDidMount() {
@@ -69,7 +86,79 @@ export default class SettingsScreen extends React.PureComponent {
       Alert.alert("AsyncStorage error", error.message);
     }
   };
+  _handleChangedPassword = async () => {
+    try {
+      if (this.CheckPassword(this.state.email)) {
+        if (this.state.email == this.state.password) {
+          let param =
+            "?PMaDonVi=" +
+            this.state.MA_DVIQLY +
+            "&PUsername=" +
+            this.state.USERNAME +
+            "&PPassword=" +
+            this.state.email +
+            "";
+          // console.log("guidid", guidid);
+          fetch(urlBaoCao.sp_UpdateMatKhau + param)
+            .then(response => response.json())
+            .then(responseJson => {
+              this.setModalVisible(false);
+              Alert.alert("Thông báo", "Cập nhật mật khẩu thành công!");
+            })
+            .catch(error => {
+              Alert.alert("Lỗi cập nhật", error.message);
+            });
+        } else {
+          Alert.alert("Thông báo", "Mật khẩu không giống nhau!");
+        }
+      } else {
+        Alert.alert(
+          "Thông báo",
+          "Mật khẩu phải bao gồm chữ hoa, chữ thường, số, ký tự đặc biệt, có độ dài từ 8-25!"
+        );
+      }
+    } catch (error) {
+      Alert.alert("Lỗi cập nhật", error.message);
+    }
+  };
+  CheckPassword(inputtxt) {
+    var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_]).{8,25}$/;
+    return passw.test(inputtxt);
+  }
+  close = async () => {
+    this.setState({ isVisible: false });
+  };
+
+  setModalVisible(visible) {
+    this.setState({ isVisible: visible });
+  }
+  handleEmailChange = (email: string) => {
+    this.setState({ email: email });
+  };
+
+  handlePasswordChange = (password: string) => {
+    this.setState({ password: password });
+  };
+
+  handleEmailSubmitPress = () => {
+    if (this.passwordInputRef.current) {
+      this.passwordInputRef.current.focus();
+    }
+  };
+
+  handleEmailBlur = () => {
+    this.setState({ emailTouched: true });
+  };
+
+  handlePasswordBlur = () => {
+    this.setState({ passwordTouched: true });
+  };
   render() {
+    const { email, password, emailTouched, passwordTouched } = this.state;
+    const emailError =
+      !email && emailTouched ? strings.PASSWORD_REQUIRED : undefined;
+    const passwordError =
+      !password && passwordTouched ? strings.PASSWORD_REQUIRED : undefined;
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     const { manifest } = Constants;
@@ -130,7 +219,77 @@ export default class SettingsScreen extends React.PureComponent {
       <View style={styles.chart}>
         {/* <Card title="CARD WITH DIVIDER"> */}
         {/* </Card> */}
-
+        <View style={styles.modalView}>
+          <Modal
+            style={styles.modal}
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isVisible}
+          >
+            <View style={styles.modalContent}>
+              <View style={styles.tab}>
+                <Button
+                  title="Huỷ"
+                  color="red"
+                  onPress={() => {
+                    this.setModalVisible(!this.state.isVisible);
+                  }}
+                />
+              </View>
+              <KeyboardAvoidingView
+                style={styles.container}
+                // On Android the keyboard behavior is handled
+                // by Android itself, so we should disable it
+                // by passing `undefined`.
+                // behavior={constants.IS_IOS ? "padding" : "padding"}
+                behavior={"padding"}
+              >
+                {/* keyboardVerticalOffset = {Header.HEIGHT + 20} // adjust the value here if you need more padding
+  style = {{ flex: 1 }}
+  behavior = "padding"  */}
+                <Spinner
+                  visible={this.state.spinner}
+                  textContent={"Đang chuyển trang..."}
+                  textStyle={styles.spinnerTextStyle}
+                />
+                <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+                <View style={styles.form}>
+                  <FormTextInputCustom
+                    value={this.state.email}
+                    onChangeText={this.handleEmailChange}
+                    onSubmitEditing={this.handleEmailSubmitPress}
+                    placeholder={strings.PASS_PLACEHOLDER}
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    returnKeyType="next"
+                    onBlur={this.handleEmailBlur}
+                    error={emailError}
+                    secureTextEntry={true}
+                    // `blurOnSubmit` causes a keyboard glitch on
+                    // Android when we want to manually focus the
+                    // next input.
+                    blurOnSubmit={constants.IS_IOS}
+                  />
+                  <FormTextInputCustom
+                    ref={this.passwordInputRef}
+                    value={this.state.password}
+                    onChangeText={this.handlePasswordChange}
+                    placeholder={strings.REPASS_PLACEHOLDER}
+                    secureTextEntry={true}
+                    returnKeyType="done"
+                    onBlur={this.handlePasswordBlur}
+                    error={passwordError}
+                  />
+                  <ButtonCustom
+                    label={strings.CHANGEDPASS}
+                    onPress={this._handleChangedPassword}
+                    disabled={!email || !password}
+                  />
+                </View>
+              </KeyboardAvoidingView>
+            </View>
+          </Modal>
+        </View>
         <SectionList
           style={styles.container}
           renderItem={this._renderItem}
@@ -140,6 +299,12 @@ export default class SettingsScreen extends React.PureComponent {
           ListHeaderComponent={ListHeader}
           sections={sections}
           // ListFooterComponent={this._renderFooter}
+        />
+        <ButtonCustom
+          label="Đổi mật khẩu"
+          onPress={() => {
+            this.setModalVisible(true);
+          }}
         />
         <ButtonCustom label="Đăng xuất" onPress={this._handleLogoutPress} />
       </View>
@@ -321,5 +486,26 @@ const styles = StyleSheet.create({
   colorTextContainer: {
     flex: 1
   },
-  chart: { flex: 1 }
+  chart: { flex: 1 },
+  modal: {
+    margin: 0,
+    //marginTop: SCREEN_HEIGHT * 0.14,
+    marginTop: 30
+  },
+  modalView: {
+    margin: 0,
+    //marginTop: SCREEN_HEIGHT * 0.14,
+    marginTop: 50
+  },
+  tab: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+    borderBottomColor: "#333",
+    borderBottomWidth: 1
+  },
+  modalContent: {
+    flex: 1,
+    backgroundColor: "#fff"
+  }
 });
