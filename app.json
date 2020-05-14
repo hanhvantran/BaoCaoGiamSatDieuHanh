@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "EVNSPC-BMIS",
+    "slug": "BaoCaoGiamSatDieuHanh",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "notification": {
+      "icon": "./assets/images/icon.png",
+      "color": "#000000"
+    },
+    "scheme": "myapp",
+    "splash": {
+      "image": "./assets/images/icon13.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.SPCIT.CNPM.BaoCaoGiamSatDieuHanh",
+      "buildNumber": "16"
+    },
+    "android": {
+      "package": "com.SPCIT.CNPM.BaoCaoGiamSatDieuHanh",
+      "versionCode": 14
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    }
+  }
+}
