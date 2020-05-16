@@ -36,7 +36,20 @@ class LoginScreen extends React.Component<{}, State> {
     passwordTouched: false,
     spinner: false
   };
-
+  _handleLogoutPress = async () => {
+    try {
+      const value = await AsyncStorage.getItem("UserInfomation");
+      if (value !== null) {
+        this.props.navigation.navigate("Home");
+      }
+      
+    } catch (error) {
+      Alert.alert("AsyncStorage error", error.message);
+    }
+  }
+  componentDidMount() {
+    this._handleLogoutPress();
+  };
   handleEmailChange = (email: string) => {
     this.setState({ email: email });
   };

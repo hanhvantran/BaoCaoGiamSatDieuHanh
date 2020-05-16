@@ -18,10 +18,10 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-        <NavigationContainer linking={LinkingConfiguration} headerMode="none">
-          <Stack.Navigator  screenOptions={{headerShown:false}} mode="modal" headerMode="none">
+        <NavigationContainer linking={LinkingConfiguration} headerMode="none" mode="modal">
+          <Stack.Navigator  screenOptions={{headerShown:false}} headerMode="none">
+          <Stack.Screen   options={{headerShown:false}}  name="LoginScreen" component={LoginScreen} />
             <Stack.Screen   options={{headerShown:false}}  name="Home" component={BottomTabNavigator} />
-            <Stack.Screen   options={{headerShown:false}}  name="LoginScreen" component={LoginScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

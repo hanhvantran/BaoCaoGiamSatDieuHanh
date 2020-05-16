@@ -25,8 +25,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 export default class SettingsScreen extends React.PureComponent {
   static navigationOptions = {
-    header:null,
-    headerShown:false
+    header: null,
+    headerShown: false
   };
   constructor(props) {
     super(props);
@@ -80,8 +80,15 @@ export default class SettingsScreen extends React.PureComponent {
   };
   _handleLogoutPress = async () => {
     try {
-      await AsyncStorage.clear();
-      this.props.navigation.navigate("LoginScreen");
+      const value = await AsyncStorage.getItem("UserInfomation");
+      if (value !== null) {
+        await AsyncStorage.clear();
+        this.props.navigation.navigate("LoginScreen");
+      }
+      else {
+        var { navigate } = this.props.navigation;
+        navigate("LoginScreen");
+      }
     } catch (error) {
       Alert.alert("AsyncStorage error", error.message);
     }
@@ -298,7 +305,7 @@ export default class SettingsScreen extends React.PureComponent {
           keyExtractor={(item, index) => index}
           ListHeaderComponent={ListHeader}
           sections={sections}
-          // ListFooterComponent={this._renderFooter}
+        // ListFooterComponent={this._renderFooter}
         />
         <ButtonCustom
           label="Đổi mật khẩu"
@@ -507,6 +514,6 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop:50
+    paddingTop: 50
   }
 });

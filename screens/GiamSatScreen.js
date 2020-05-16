@@ -1,4 +1,3 @@
-import _ from "lodash";
 import React from "react";
 import {
   StyleSheet,
@@ -18,7 +17,8 @@ import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import Touchable from "react-native-platform-touchable";
 import { Ionicons } from "@expo/vector-icons";
-import { YellowBox } from 'react-native'
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 const list1 = [
   {
     name: "Biểu đồ thực hiện công tác kiểm tra",
@@ -77,6 +77,13 @@ export default class GiamSatScreen extends React.PureComponent {
     YellowBox.ignoreWarnings([
       'VirtualizedLists should never be nested', // TODO: Remove when fixed
     ])
+    YellowBox.ignoreWarnings(['componentWillReceiveProps']);
+    const _console = _.clone(console);
+    console.warn = message => {
+      if (message.indexOf('componentWillReceiveProps') <= -1) {
+        _console.warn(message);
+      }
+    };
     this.updateIndex = this.updateIndex.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.state = {

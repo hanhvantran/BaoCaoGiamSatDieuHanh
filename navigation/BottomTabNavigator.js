@@ -58,7 +58,6 @@ import * as React from 'react';
 import { Platform, StyleSheet } from "react-native";
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 
 import GiamSatScreen from "../screens/GiamSatScreen";
 import KinhDoanhScreen from "../screens/KinhDoanhScreen";
@@ -126,10 +125,10 @@ import NhanDinhTramCongCongScreen from "../screens/NhanDinh/NhanDinhTramCongCong
 import NhanDinhThongBaoScreen from "../screens/NhanDinh/NhanDinhThongBaoScreen";
 import NhanDinhThongBaoChiTietScreen from "../screens/NhanDinh/NhanDinhThongBaoChiTietScreen";
 import NhanDinhDoDoemScreen from "../screens/NhanDinh/NhanDinhDoDoemScreen";
-
+import LoginScreen from "../LoginScreen";
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = 'LoginScreen';
 
 const styles = StyleSheet.create({
   container: {

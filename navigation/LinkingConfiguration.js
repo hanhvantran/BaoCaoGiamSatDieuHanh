@@ -6,7 +6,6 @@ export default {
     Root: {
       path: 'root',
       screens: {
-        Home: 'Home',
         LoginScreen: 'LoginScreen'
       },
     },

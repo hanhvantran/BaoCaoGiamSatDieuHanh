@@ -18,6 +18,7 @@ import ActionButton from "react-native-action-button";
 import Dashboard from "react-native-dashboard";
 import Icon from "react-native-vector-icons/Ionicons";
 import { YellowBox } from 'react-native'
+import _ from 'lodash';
 export default class KinhDoanhScreen extends React.PureComponent {
   static navigationOptions = {
     title: null,
@@ -29,6 +30,13 @@ export default class KinhDoanhScreen extends React.PureComponent {
     YellowBox.ignoreWarnings([
       'VirtualizedLists should never be nested', // TODO: Remove when fixed
     ])
+    YellowBox.ignoreWarnings(['componentWillReceiveProps']);
+    const _console = _.clone(console);
+    console.warn = message => {
+      if (message.indexOf('componentWillReceiveProps') <= -1) {
+        _console.warn(message);
+      }
+    };
     this.state = {
       selectedDashboard: true,
       screenheight: Dimensions.get("window").height,
