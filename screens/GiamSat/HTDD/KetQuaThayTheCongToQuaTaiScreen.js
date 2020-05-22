@@ -17,6 +17,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 export default class KetQuaThayTheCongToQuaTaiScreen extends React.PureComponent {
   static navigationOptions = {
     title: "Công tơ quá tải"
+ 
   };
   constructor(props) {
     super(props);

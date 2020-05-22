@@ -24,7 +24,7 @@ import {
 
 export default class KetQuaTheoLoTrinhGiamTonThatScreen extends React.PureComponent {
   static navigationOptions = {
-    title: "Kết quả theo lộ trình giảm TTĐN"
+    title: "Kết quả khai thác hiệu suất TBACC"
   };
   constructor(props) {
     super(props);

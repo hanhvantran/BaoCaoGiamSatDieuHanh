@@ -16,7 +16,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 export default class TBDDDaThayTheScreen extends React.PureComponent {
   static navigationOptions = {
-    title: "HĐMBĐ quá hạn"
+    title: "TBĐĐ đã thay thế"
   };
   constructor(props) {
     super(props);

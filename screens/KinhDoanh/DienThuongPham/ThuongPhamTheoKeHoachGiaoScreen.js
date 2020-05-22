@@ -308,7 +308,7 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
     let colum3 = 100;
     list2.push(colum1);
     list2.push(colum2);
-    list2.push(colum3);
+    //list2.push(colum3);
     list1.push(vTong1);
     list1.push(vTong2);
     list1.push(vTong3);
@@ -317,7 +317,7 @@ export default class ThuongPhamTheoKeHoachGiaoScreen extends React.PureComponent
     varCategories1.push("Kế hoạch");
     varCategories2.push("Tháng so với kế hoạch");
     varCategories2.push("Luỹ kế so với kế hoạch");
-    varCategories2.push("Kế hoạch");
+   // varCategories2.push("Kế hoạch");
     var conf1 = {
       chart: {
         type: "column",

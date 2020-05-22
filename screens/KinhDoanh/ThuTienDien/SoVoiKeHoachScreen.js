@@ -228,7 +228,7 @@ export default class SoVoiKeHoachScreen extends React.PureComponent {
         zoomType: "xy"
       },
       title: {
-        text: "Thu tiền điện so với kế hoạch theo đơn vị"
+        text: "Thu tiền điện theo đơn vị"
       },
       yAxis: {
         title: {
@@ -301,23 +301,23 @@ export default class SoVoiKeHoachScreen extends React.PureComponent {
     let colum3 = 100;
     list2.push(colum1);
     list2.push(colum2);
-    list2.push(colum3);
+    //list2.push(colum3);
     list1.push(vTong1);
     list1.push(vTong2);
-    list1.push(vTong3);
+    //list1.push(vTong3);
     varCategories1.push("Thu tiền điện tháng");
     varCategories1.push("Thu tiền điện luỹ kế");
-    varCategories1.push("Kế hoạch");
-    varCategories2.push("Tháng so với kế hoạch");
-    varCategories2.push("Luỹ kế so với kế hoạch");
-    varCategories2.push("Kế hoạch");
+    //varCategories1.push("Kế hoạch");
+    varCategories2.push("Tháng");
+    varCategories2.push("Luỹ kế");
+    //varCategories2.push("Kế hoạch");
     var conf1 = {
       chart: {
         type: "column",
         zoomType: "xy"
       },
       title: {
-        text: "Tổng thu tiền điện so với kế hoạch"
+        text: "Tổng thu tiền điện"
       },
       yAxis: {
         title: {
@@ -453,7 +453,7 @@ export default class SoVoiKeHoachScreen extends React.PureComponent {
               backgroundColor: "white"
             }}
           >
-            <View style={{ flexDirection: width >= 600 ? "row" : "column" }}>
+            {/* <View style={{ flexDirection: width >= 600 ? "row" : "column" }}> */}
               <ChartView
                 style={{ height: 500, width: vChieuRong }}
                 config={conf1}
@@ -462,15 +462,15 @@ export default class SoVoiKeHoachScreen extends React.PureComponent {
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
               />
-              <ChartView
+              {/* <ChartView
                 style={{ height: 500, width: vChieuRong }}
                 config={conf2}
                 options={options2}
                 originWhitelist={[""]}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-              />
-            </View>
+              /> */}
+            {/* </View> */}
             <View style={{ backgroundColor: "orange", height: 1 }} />
             <ChartView
               style={{ height: 500 }}

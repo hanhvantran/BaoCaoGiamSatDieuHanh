@@ -28,7 +28,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.SPCIT.CNPM.BaoCaoGiamSatDieuHanh",
-      "buildNumber": "17"
+      "buildNumber": "18"
     },
     "android": {
       "package": "com.SPCIT.CNPM.BaoCaoGiamSatDieuHanh",

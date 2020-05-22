@@ -156,20 +156,20 @@ function KinhDoanhStackScreen() {
   return (
     <KinhDoanhStack.Navigator>
       <KinhDoanhStack.Screen options={{headerShown:false}}  name="KinhDoanh" component={KinhDoanhScreen} />
-      <KinhDoanhStack.Screen name="ThanhPhanPhuTai" component={ThanhPhanPhuTaiScreen} />
-      <KinhDoanhStack.Screen name="TheoCapDienAp" component={TheoCapDienApScreen} />
-      <KinhDoanhStack.Screen name="TheoThoiGianBanDien" component={TheoThoiGianBanDienScreen} />
-      <KinhDoanhStack.Screen name="ThuongPhamTheoKeHoachGiao" component={ThuongPhamTheoKeHoachGiaoScreen} />
-      <KinhDoanhStack.Screen name="TheoNhomNghanhNghe" component={TheoNhomNghanhNgheScreen} />
-      <KinhDoanhStack.Screen name="GiaBanDienBinhQuan" component={GiaBanDienBinhQuanScreen} />
-      <KinhDoanhStack.Screen name="KhachHangKhaiThacBaGia" component={KhachHangKhaiThacBaGiaScreen} />
-      <KinhDoanhStack.Screen name="KhachHangThuocDoiTuongGS" component={KhachHangThuocDoiTuongGSScreen} />
-      <KinhDoanhStack.Screen name="KHKhaiThacBaGiaTheoNN" component={KHKhaiThacBaGiaTheoNNScreen} />
-      <KinhDoanhStack.Screen name="KhachHangNghanhNghe" component={KhachHangNghanhNgheScreen} />
-      <KinhDoanhStack.Screen name="KhachHangCatDien" component={KhachHangCatDienScreen} />
-      <KinhDoanhStack.Screen name="KhachHangNoTienDien" component={KhachHangNoTienDienScreen} />
-      <KinhDoanhStack.Screen name="KhachHangThanhLy" component={KhachHangThanhLyScreen} />
-      <KinhDoanhStack.Screen name="SoVoiKeHoach" component={SoVoiKeHoachScreen} />
+      <KinhDoanhStack.Screen name="ThanhPhanPhuTai" component={ThanhPhanPhuTaiScreen} options={{title:"Theo 5 thành phần phụ tải"}} />
+      <KinhDoanhStack.Screen name="TheoCapDienAp" component={TheoCapDienApScreen} options={{title:"Theo cấp điện áp"}} />
+      <KinhDoanhStack.Screen name="TheoThoiGianBanDien" component={TheoThoiGianBanDienScreen} options={{title:"Theo thời gian bán điện"}} />
+      <KinhDoanhStack.Screen name="ThuongPhamTheoKeHoachGiao" component={ThuongPhamTheoKeHoachGiaoScreen} options={{title:"Theo kế hoạch giao"}} />
+      <KinhDoanhStack.Screen name="TheoNhomNghanhNghe" component={TheoNhomNghanhNgheScreen} options={{title:"Theo nhóm nghành nghề đặc thù"}} />
+      <KinhDoanhStack.Screen name="GiaBanDienBinhQuan" component={GiaBanDienBinhQuanScreen} options={{title:"Giá bán bình quân"}} />
+      <KinhDoanhStack.Screen name="KhachHangKhaiThacBaGia" component={KhachHangKhaiThacBaGiaScreen} options={{title:"Khách hàng khai thác 3 giá"}} />
+      <KinhDoanhStack.Screen name="KhachHangThuocDoiTuongGS" component={KhachHangThuocDoiTuongGSScreen} options={{title:"Thuộc đối tượng giám sát"}} />
+      <KinhDoanhStack.Screen name="KHKhaiThacBaGiaTheoNN" component={KHKhaiThacBaGiaTheoNNScreen} options={{title:"Khách hàng 3 giá theo nghành nghề"}} />
+      <KinhDoanhStack.Screen name="KhachHangNghanhNghe" component={KhachHangNghanhNgheScreen} options={{title:"Khách hàng theo nghành nghề"}} />
+      <KinhDoanhStack.Screen name="KhachHangCatDien" component={KhachHangCatDienScreen} options={{title:"Khách hàng cắt điện"}} />
+      <KinhDoanhStack.Screen name="KhachHangNoTienDien" component={KhachHangNoTienDienScreen} options={{title:"Khách hàng nợ tiền điện"}} />
+      <KinhDoanhStack.Screen name="KhachHangThanhLy" component={KhachHangThanhLyScreen} options={{title:"Khách hàng thành lý"}} />
+      <KinhDoanhStack.Screen name="SoVoiKeHoach" component={SoVoiKeHoachScreen} options={{title:"Thu tiền điện so với kế hoạch giao"}} />
     </KinhDoanhStack.Navigator>
   );
 }
@@ -179,25 +179,25 @@ function GiamSatStackScreen() {
   return (
     <GiamSatStack.Navigator>
       <GiamSatStack.Screen options={{headerShown:false}}  name="GiamSatScreen" component={GiamSatScreen} />
-      <GiamSatStack.Screen name="KiemTraVien" component={KiemTraVienScreen} />
-      <GiamSatStack.Screen name="CanhBaoCanRaSoat" component={CanhBaoCanRaSoatScreen} />
-      <GiamSatStack.Screen name="KetQuaBanCSPK" component={KetQuaBanCSPKScreen} />
-      <GiamSatStack.Screen name="KetQuaCapNhatChiNiem" component={KetQuaCapNhatChiNiemScreen} />
-      <GiamSatStack.Screen name="KetQuaThayTheCongToQuaTai" component={KetQuaThayTheCongToQuaTaiScreen} />
-      <GiamSatStack.Screen name="KetQuaThayTheTBDD" component={KetQuaThayTheTBDDScreen} />
-      <GiamSatStack.Screen name="TBDDChayHong" component={TBDDChayHongScreen} />
-      <GiamSatStack.Screen name="SuDungDienTietKiem" component={SuDungDienTietKiemScreen} />
-      <GiamSatStack.Screen name="TheoDienThuongPham" component={TheoDienThuongPhamScreen} />
-      <GiamSatStack.Screen name="KetQuaThayTheTBA" component={KetQuaThayTheTBAScreen} />
-      <GiamSatStack.Screen name="KetQuaTheoLoTrinhGiamTonThat" component={KetQuaTheoLoTrinhGiamTonThatScreen} />
-      <GiamSatStack.Screen name="TyLeTonThatDienNang" component={TyLeTonThatDienNangScreen} />
-      <GiamSatStack.Screen name="HDMBDChuaRaSoat" component={HDMBDChuaRaSoatScreen} />
-      <GiamSatStack.Screen name="HDMBDDaRaSoat" component={HDMBDDaRaSoatScreen} />
-      <GiamSatStack.Screen name="TBDDChuaThayThe" component={TBDDChuaThayTheScreen} />
-      <GiamSatStack.Screen name="TBDDDaThayThe" component={TBDDDaThayTheScreen} />
-      <GiamSatStack.Screen name="KiemTraXuLyVPSDD" component={KiemTraXuLyVPSDDScreen} />
-      <GiamSatStack.Screen name="KiemTraHTDD" component={KiemTraHTDDScreen} />
-      <GiamSatStack.Screen name="KetQuaKiemTraApGia" component={KetQuaKiemTraApGiaScreen} />
+      <GiamSatStack.Screen name="KiemTraVien" component={KiemTraVienScreen} options={{title:"Kiểm tra viên"}} />
+      <GiamSatStack.Screen name="CanhBaoCanRaSoat" component={CanhBaoCanRaSoatScreen} options={{title:"Chưa khai thác CSPK"}} />
+      <GiamSatStack.Screen name="KetQuaBanCSPK" component={KetQuaBanCSPKScreen} options={{title:"Kết quả bán CSPK"}} />
+      <GiamSatStack.Screen name="KetQuaCapNhatChiNiem" component={KetQuaCapNhatChiNiemScreen} options={{title:"HTĐĐ chưa niêm chì"}} />
+      <GiamSatStack.Screen name="KetQuaThayTheCongToQuaTai" component={KetQuaThayTheCongToQuaTaiScreen} options={{title:"Công tơ quá tải"}} />
+      <GiamSatStack.Screen name="KetQuaThayTheTBDD" component={KetQuaThayTheTBDDScreen} options={{title:"TBĐĐ được thay thế"}} />
+      <GiamSatStack.Screen name="TBDDChayHong" component={TBDDChayHongScreen} options={{title:"TBĐĐ cháy hỏng"}} />
+      <GiamSatStack.Screen name="SuDungDienTietKiem" component={SuDungDienTietKiemScreen} options={{title:"Sử dụng điện tiết kiệm"}} />
+      <GiamSatStack.Screen name="TheoDienThuongPham" component={TheoDienThuongPhamScreen} options={{title:"Điện thương phẩm"}} />
+      <GiamSatStack.Screen name="KetQuaThayTheTBA" component={KetQuaThayTheTBAScreen} options={{title:"Kết quả khai thác hiệu suất TBACC"}} />
+      <GiamSatStack.Screen name="KetQuaTheoLoTrinhGiamTonThat" component={KetQuaTheoLoTrinhGiamTonThatScreen} options={{title:"Kết quả khai thác hiệu suất TBACC"}}  />
+      <GiamSatStack.Screen name="TyLeTonThatDienNang" component={TyLeTonThatDienNangScreen} options={{title:"Báo cáo tỷ lệ tổn thất điện năng"}} />
+      <GiamSatStack.Screen name="HDMBDChuaRaSoat" component={HDMBDChuaRaSoatScreen} options={{title:"HĐMBĐ quá hạn"}} />
+      <GiamSatStack.Screen name="HDMBDDaRaSoat" component={HDMBDDaRaSoatScreen} options={{title:"HĐMBĐ đã ký lại"}} />
+      <GiamSatStack.Screen name="TBDDChuaThayThe" component={TBDDChuaThayTheScreen} options={{title:"TBĐĐ quá hạn"}} />
+      <GiamSatStack.Screen name="TBDDDaThayThe" component={TBDDDaThayTheScreen} options={{title:"TBĐĐ đã thay thế"}} />
+      <GiamSatStack.Screen name="KiemTraXuLyVPSDD" component={KiemTraXuLyVPSDDScreen} options={{title:"Kiểm tra xử lý VPSDĐ"}} />
+      <GiamSatStack.Screen name="KiemTraHTDD" component={KiemTraHTDDScreen} options={{title:"Kiểm tra HTĐĐ"}}/>
+      <GiamSatStack.Screen name="KetQuaKiemTraApGia" component={KetQuaKiemTraApGiaScreen} options={{title:"Kiểm tra áp giá"}} />
     </GiamSatStack.Navigator>
   );
 }
@@ -206,13 +206,13 @@ function ThongBaoStackScreen() {
   return (
     <ThongBaoStack.Navigator>
       <ThongBaoStack.Screen options={{headerShown:false}}  name="ThongBaoScreen" component={ThongBaoScreen} />
-      <ThongBaoStack.Screen name="NhanDinhGiamSatScreen"  component={NhanDinhGiamSatScreen} />
-      <ThongBaoStack.Screen name="NhanDinhKinhDoanhScreen" component={NhanDinhKinhDoanhScreen} />
-      <ThongBaoStack.Screen name="NhanDinhTietKiemDienScreen" component={NhanDinhTietKiemDienScreen} />
-      <ThongBaoStack.Screen name="NhanDinhTramCongCongScreen" component={NhanDinhTramCongCongScreen} />
-      <ThongBaoStack.Screen name="NhanDinhThongBaoScreen" component={NhanDinhThongBaoScreen} />
-      <ThongBaoStack.Screen name="NhanDinhDoDoemScreen" component={NhanDinhDoDoemScreen} />
-      <ThongBaoStack.Screen name="NhanDinhThongBaoChiTietScreen" component={NhanDinhThongBaoChiTietScreen} />
+      <ThongBaoStack.Screen name="NhanDinhGiamSatScreen"  component={NhanDinhGiamSatScreen} options={{title:"Giám sát"}} />
+      <ThongBaoStack.Screen name="NhanDinhKinhDoanhScreen" component={NhanDinhKinhDoanhScreen} options={{title:"Kinh doanh"}} />
+      <ThongBaoStack.Screen name="NhanDinhTietKiemDienScreen" component={NhanDinhTietKiemDienScreen} options={{title:"Tiết kiệm điện"}} />
+      <ThongBaoStack.Screen name="NhanDinhTramCongCongScreen" component={NhanDinhTramCongCongScreen} options={{title:"Trạm công cộng"}} />
+      <ThongBaoStack.Screen name="NhanDinhThongBaoScreen" component={NhanDinhThongBaoScreen} options={{title:"Cảnh báo"}} />
+      <ThongBaoStack.Screen name="NhanDinhDoDoemScreen" component={NhanDinhDoDoemScreen} options={{title:"Đo đếm"}} />
+      <ThongBaoStack.Screen name="NhanDinhThongBaoChiTietScreen" component={NhanDinhThongBaoChiTietScreen} options={{title:"Chi tiết cảnh báos"}} />
    </ThongBaoStack.Navigator>
   );
 }

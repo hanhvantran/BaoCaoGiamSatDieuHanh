@@ -316,7 +316,7 @@ export default class HomeScreen extends React.PureComponent {
     const urls = [
       urlBaoCao.GetSoDoDemTheoThang + param1, //MaDonVi, Thang, Nam
       urlBaoCao.GetHDMBDThucHienTheoThang + param1, //MaDonVi, Thang, Nam
-      urlBaoCao.GetGBBQThucHienTheoThang2 + param1, //MaDonVi, Thang, Nam
+      urlBaoCao.GetGBBQThucHienTheoThang + param1, //MaDonVi, Thang, Nam
       urlBaoCao.GetDoanhThuThucHienTheoThang + param1, //MaDonVi, TuThang, DenThang, Nam
       urlBaoCao.GetTonThatThangTheoPPMoi + param2, //MaDonVi, TuNam, DenNam
       urlBaoCao.GetThuongPhamThucHienTheoThang + param1,
